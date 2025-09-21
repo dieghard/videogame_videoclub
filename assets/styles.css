@@ -762,10 +762,181 @@ body {
 
 /* ========== RESPONSIVE DESIGN OPTIMIZADO ========== */
 
-/* Extra Small Devices (phones) - 320px and up */
+/* DISPOSITIVOS ULTRA PEQUEÑOS (320px - 360px) */
+@media (max-width: 360px) {
+    body {
+        font-size: 14px; /* Base más grande */
+    }
+    
+    /* Year Display mucho más visible */
+    .year-display {
+        top: 10px;
+        padding: 12px 20px;
+        border-width: 3px;
+        min-width: 280px;
+    }
+    
+    .year-number {
+        font-size: 24px !important; /* Era 14px, ahora 24px */
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+    
+    .year-nostalgia {
+        font-size: 10px !important; /* Era 4px, ahora 10px */
+        line-height: 1.3;
+        padding: 0 5px;
+    }
+    
+    /* Customers significativamente más grandes */
+    .customer {
+        width: 100px !important; /* Era 80px, ahora 100px */
+        height: 130px !important; /* Era 100px, ahora 130px */
+        padding: 6px !important;
+        border-width: 2px !important;
+        font-size: 12px;
+    }
+    
+    .customer-sprite {
+        font-size: 20px !important; /* Era 16px, ahora 20px */
+        margin-bottom: 4px !important;
+    }
+    
+    .customer-name {
+        font-size: 8px !important; /* Era 5px, ahora 8px */
+        margin-bottom: 3px !important;
+        font-weight: bold;
+        line-height: 1.2;
+    }
+    
+    .customer-request {
+        font-size: 16px !important; /* Era 12px, ahora 16px */
+        padding: 3px 6px !important;
+        margin-bottom: 3px !important;
+    }
+    
+    .customer-product {
+        font-size: 7px !important; /* Era 4px, ahora 7px */
+        margin-bottom: 5px !important;
+        padding: 3px 5px !important;
+        line-height: 1.3;
+        font-weight: bold;
+    }
+    
+    .patience-label {
+        font-size: 7px !important; /* Era 6px, ahora 7px */
+        margin-bottom: 3px !important;
+        font-weight: bold;
+    }
+    
+    .patience-bar {
+        height: 6px !important; /* Era 4px, ahora 6px */
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+    
+    /* Game Over CRT Modal más legible */
+    .crt-content {
+        padding: 1rem;
+    }
+    
+    .crt-title {
+        font-size: 1rem; /* 16px */
+        margin-bottom: 1rem;
+        line-height: 1.2;
+    }
+    
+    .crt-message {
+        font-size: 0.75rem; /* 12px */
+        margin-bottom: 1rem;
+        line-height: 1.4;
+    }
+    
+    .crt-stats {
+        font-size: 0.625rem; /* 10px */
+        margin-bottom: 1rem;
+        line-height: 1.3;
+    }
+    
+    .crt-button {
+        padding: 0.75rem 1.25rem;
+        font-size: 0.75rem; /* 12px */
+        min-height: 3rem;
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    /* Menu más legible */
+    .menu-title {
+        font-size: 1.25rem !important; /* 20px */
+        margin-bottom: 1.5rem !important;
+        padding: 0 0.5rem;
+        line-height: 1.3;
+    }
+    
+    .menu-button {
+        padding: 1rem 1.5rem !important;
+        font-size: 0.875rem !important; /* 14px */
+        margin: 0.5rem 0 !important;
+        min-height: 3.5rem !important;
+        width: 100% !important;
+        max-width: 280px !important;
+        line-height: 1.2;
+    }
+    
+    /* Stats del header más legibles */
+    .stat {
+        font-size: 0.625rem !important; /* 10px */
+    }
+    
+    .stat-value {
+        font-size: 0.875rem !important; /* 14px */
+    }
+    
+    .logo {
+        font-size: 1rem !important; /* 16px */
+    }
+    
+    /* Power-ups más grandes */
+    .power-up {
+        width: 2.5rem !important; /* 40px */
+        height: 2.5rem !important;
+        font-size: 1.125rem !important; /* 18px */
+    }
+    
+    /* Score display más visible */
+    .score-display {
+        font-size: 1.5rem !important; /* 24px */
+        padding: 0.5rem 1rem !important;
+    }
+    
+    /* Frases más legibles */
+    .frase-videoclub {
+        font-size: 0.625rem !important; /* 10px */
+        padding: 0.75rem 1rem !important;
+        max-width: 280px !important;
+        line-height: 1.4 !important;
+    }
+    
+    /* Item slots más grandes */
+    .item-slot {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 24px !important;
+        border-width: 2px !important;
+    }
+    
+    /* Videoclub área */
+    .videoclub {
+        width: 95%;
+        height: 30%;
+        border-width: 3px;
+    }
+}
+
+/* Extra Small Devices (phones) - 361px and up */
 @media (max-width: 480px) {
     body {
-        font-size: 8px;
+        font-size: 12px;
     }
     
     .game-container {
@@ -779,7 +950,7 @@ body {
     }
     
     .logo {
-        font-size: 12px;
+        font-size: 16px;
     }
     
     .stats {
@@ -789,11 +960,11 @@ body {
     }
     
     .stat {
-        font-size: 7px;
+        font-size: 10px;
     }
     
     .stat-value {
-        font-size: 10px;
+        font-size: 14px;
     }
     
     /* Paredes Blockbuster ultra compactas */
@@ -890,14 +1061,19 @@ body {
     
     /* Menu responsive */
     .menu-title {
-        font-size: 14px;
-        margin-bottom: 20px;
+        font-size: 20px;
+        margin-bottom: 25px;
+        padding: 0 10px;
+        text-align: center;
     }
     
     .menu-button {
-        padding: 10px 20px;
-        font-size: 8px;
-        margin: 5px;
+        padding: 18px 25px;
+        font-size: 14px;
+        margin: 8px;
+        min-height: 50px;
+        width: 90%;
+        max-width: 300px;
     }
     
     /* Score display compacto */
@@ -1607,5 +1783,133 @@ body {
         font-size: 6px;
         padding: 6px 10px;
         line-height: 1.2;
+    }
+}
+
+/* ========== OPTIMIZACIÓN ESPECÍFICA PARA iPHONE 12 Y DISPOSITIVOS iOS ========== */
+
+/* iPhone 12/13/14 específico (390x844) */
+@media screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) {
+    .menu-button {
+        padding: 20px 30px !important;
+        font-size: 16px !important;
+        margin: 10px !important;
+        min-height: 60px !important;
+        border-radius: 15px !important;
+    }
+    
+    .menu-title {
+        font-size: 24px !important;
+        margin-bottom: 30px !important;
+    }
+    
+    .logo {
+        font-size: 18px !important;
+    }
+    
+    .stat {
+        font-size: 12px !important;
+    }
+    
+    .stat-value {
+        font-size: 16px !important;
+    }
+}
+
+/* Optimización general para dispositivos iOS (Safari específico) */
+@media screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 480px) {
+    body {
+        font-size: 14px !important;
+        -webkit-text-size-adjust: 100%;
+        -webkit-font-smoothing: antialiased;
+    }
+    
+    .game-container {
+        height: 100vh;
+        height: -webkit-fill-available; /* Fix para Safari iOS */
+    }
+    
+    .menu-screen {
+        padding: 20px;
+        justify-content: space-evenly;
+    }
+    
+    .menu-button {
+        padding: 18px 30px !important;
+        font-size: 15px !important;
+        margin: 8px 0 !important;
+        min-height: 55px !important;
+        width: 100% !important;
+        max-width: 320px !important;
+        touch-action: manipulation; /* Mejora respuesta táctil */
+        -webkit-tap-highlight-color: rgba(0,0,0,0); /* Quita highlight azul */
+    }
+    
+    .menu-title {
+        font-size: 22px !important;
+        margin-bottom: 30px !important;
+        line-height: 1.2;
+    }
+    
+    /* Elementos del juego más grandes */
+    .customer {
+        width: 100px !important;
+        height: 120px !important;
+        font-size: 12px !important;
+    }
+    
+    .customer-name {
+        font-size: 8px !important;
+    }
+    
+    .customer-product {
+        font-size: 6px !important;
+    }
+    
+    .patience-label {
+        font-size: 6px !important;
+        margin-bottom: 2px;
+    }
+    
+    .item-slot {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 24px !important;
+    }
+    
+    .power-up {
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 18px !important;
+    }
+    
+    .score-display {
+        font-size: 28px !important;
+        padding: 8px 15px !important;
+    }
+    
+    /* Frases más legibles */
+    .frase-videoclub {
+        font-size: 11px !important;
+        padding: 15px 20px !important;
+        max-width: 300px !important;
+        line-height: 1.4 !important;
+    }
+}
+
+/* Fix para dispositivos con notch (iPhone X y posteriores) */
+@media screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3),
+       screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3),
+       screen and (device-width: 428px) and (device-height: 926px) and (-webkit-device-pixel-ratio: 3) {
+    .game-container {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+    
+    .menu-screen {
+        padding-top: max(20px, env(safe-area-inset-top));
+        padding-bottom: max(20px, env(safe-area-inset-bottom));
     }
 }

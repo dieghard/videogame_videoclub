@@ -1173,8 +1173,32 @@ function createCustomerElement(request, name, product) {
 // Animar entrada de cliente
 function animateCustomerEntry(element, index) {
     const startX = -120;
-    const targetX = 50 + (index * 120);
-    const y = 100 + (index * 30);
+    let targetX, y;
+    
+    // Detectar pantalla pequeña (360px o menos)
+    const isSmallScreen = window.innerWidth <= 360;
+    
+    if (isSmallScreen) {
+        // Layout compacto para pantallas pequeñas - espaciado ajustado para customers más grandes (100px)
+        if (index === 0) {
+            targetX = 5;   // Primer cliente más pegado al borde izquierdo
+            y = 70;        // Un poco más arriba
+        } else if (index === 1) {
+            targetX = 110; // Segundo cliente al centro
+            y = 70;
+        } else if (index === 2) {
+            targetX = 215; // Tercer cliente más pegado al borde derecho
+            y = 70;
+        } else {
+            // Clientes adicionales en fila inferior
+            targetX = 5 + ((index - 3) * 105);
+            y = 220;       // Más espacio vertical para customers más altos
+        }
+    } else {
+        // Layout normal para pantallas grandes
+        targetX = 50 + (index * 120);
+        y = 100 + (index * 30);
+    }
     
     element.style.left = startX + 'px';
     element.style.top = y + 'px';
@@ -1252,15 +1276,52 @@ function removeCustomer(index) {
     
     // Reposicionar clientes restantes
     gameState.customers.forEach((c, i) => {
-        const newX = 50 + (i * 120);
-        c.element.animate([
-            { left: c.element.offsetLeft + 'px' },
-            { left: newX + 'px' }
-        ], {
-            duration: 300,
-            easing: 'ease-out',
-            fill: 'forwards'
-        });
+        const isSmallScreen = window.innerWidth <= 360;
+        let newX, newY;
+        
+        if (isSmallScreen) {
+            // Layout compacto para pantallas pequeñas - espaciado ajustado para customers más grandes
+            if (i === 0) {
+                newX = 5;
+                newY = 70;
+            } else if (i === 1) {
+                newX = 110;
+                newY = 70;
+            } else if (i === 2) {
+                newX = 215;
+                newY = 70;
+            } else {
+                newX = 5 + ((i - 3) * 105);
+                newY = 220;
+            }
+            
+            // Animar posición X e Y
+            c.element.animate([
+                { 
+                    left: c.element.offsetLeft + 'px',
+                    top: c.element.offsetTop + 'px'
+                },
+                { 
+                    left: newX + 'px',
+                    top: newY + 'px'
+                }
+            ], {
+                duration: 300,
+                easing: 'ease-out',
+                fill: 'forwards'
+            });
+        } else {
+            // Layout normal para pantallas grandes
+            newX = 50 + (i * 120);
+            c.element.animate([
+                { left: c.element.offsetLeft + 'px' },
+                { left: newX + 'px' }
+            ], {
+                duration: 300,
+                easing: 'ease-out',
+                fill: 'forwards'
+            });
+        }
     });
 }
 
@@ -2134,5 +2195,37 @@ document.addEventListener('click', (e) => {
     // Solo durante el juego y no en botones/elementos interactivos
     if (gameState.isPlaying && !e.target.closest('button, .item-slot, .customer, .power-up, .movie-poster')) {
         createSparkEffect(e.clientX, e.clientY);
+    }
+});
+
+// Reposicionar customers cuando cambie el tamaño de pantalla
+window.addEventListener('resize', () => {
+    if (gameState.isPlaying && gameState.customers.length > 0) {
+        gameState.customers.forEach((customer, index) => {
+            const isSmallScreen = window.innerWidth <= 360;
+            let newX, newY;
+            
+            if (isSmallScreen) {
+                if (index === 0) {
+                    newX = 5;
+                    newY = 70;
+                } else if (index === 1) {
+                    newX = 110;
+                    newY = 70;
+                } else if (index === 2) {
+                    newX = 215;
+                    newY = 70;
+                } else {
+                    newX = 5 + ((index - 3) * 105);
+                    newY = 220;
+                }
+            } else {
+                newX = 50 + (index * 120);
+                newY = 100 + (index * 30);
+            }
+            
+            customer.element.style.left = newX + 'px';
+            customer.element.style.top = newY + 'px';
+        });
     }
 });
