@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#6B46C1">
-    <meta name="description" content="Retro VideoClub Rush - Juego arcade retro estilo años 80">
+    <meta name="description" content="VideoClub Sandy - Juego arcade retro estilo años 80">
     
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="VideoClub Rush">
+    <meta name="apple-mobile-web-app-title" content="VideoClub Sandy">
     
     <!-- PWA Icons -->
     <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%236B46C1'/><rect x='20' y='30' width='60' height='40' fill='%23EC4899' rx='5'/><rect x='30' y='40' width='40' height='20' fill='%236B46C1'/></svg>">
@@ -27,10 +27,11 @@
         <!-- Pantalla de menú principal -->
         <div class="menu-screen" id="mainMenu">
             <div class="menu-title">📼 VIDEOCLUB SANDY</div>
-            <button class="menu-button" onclick="manualEnableAudio()" id="audioButton">🔊 ACTIVAR AUDIO</button>
             <button class="menu-button" onclick="startGame()">🎮 JUGAR</button>
             <button class="menu-button" onclick="showHighScores()">🏆 RÉCORDS</button>
             <button class="menu-button" onclick="showInstructions()">📖 INSTRUCCIONES</button>
+            <button class="menu-button" onclick="manualEnableAudio()" id="audioButton">🔊 ACTIVAR AUDIO</button>
+            <button class="menu-button pwa-install-btn" onclick="installPWA()" id="installButton">📱 INSTALAR APP</button>
         </div>
         
         <!-- Cabecera del juego -->
@@ -58,23 +59,43 @@
         
         <!-- Área principal del juego -->
         <div class="game-area" id="gameArea">
-            <!-- Elementos decorativos de fondo -->
-            <div class="decoration-frame madonna">
-                <div class="decoration-pixel-art madonna">👑</div>
-                <div class="decoration-label">MADONNA<br/>LIKE A<br/>VIRGIN</div>
+            <!-- Pared izquierda estilo Blockbuster -->
+            <div class="blockbuster-wall left-wall">
+                <div class="movie-poster" data-image="madonna.jpg">
+                    <div class="poster-label">MADONNA<br/>LIKE A VIRGIN</div>
+                </div>
+                <div class="movie-poster" data-image="cazafantasmas.jpg">
+                    <div class="poster-label">GHOSTBUSTERS<br/>1984</div>
+                </div>
+                <div class="movie-poster" data-image="et.jpg">
+                    <div class="poster-label">E.T.<br/>EL EXTRATERRESTRE</div>
+                </div>
             </div>
-            <div class="decoration-frame bttf">
-                <div class="decoration-pixel-art bttf">🚗</div>
-                <div class="decoration-label">BACK TO<br/>THE<br/>FUTURE</div>
+            
+            <!-- Pared derecha estilo Blockbuster -->
+            <div class="blockbuster-wall right-wall">
+                <div class="movie-poster" data-image="volveralfuturo.jpg">
+                    <div class="poster-label">BACK TO<br/>THE FUTURE</div>
+                </div>
+                <div class="movie-poster" data-image="takeonme.jpg">
+                    <div class="poster-label">A-HA<br/>TAKE ON ME</div>
+                </div>
             </div>
+            
+            <!-- Display del año prominente -->
+            <div class="year-display">
+                <div class="year-number" id="yearDisplay">1987</div>
+                <div class="year-nostalgia" id="yearNostalgia">¡El año que cambió todo!</div>
+            </div>
+            
             <!-- Los clientes aparecerán aquí -->
         </div>
         
         <!-- El videoclub con los items -->
-        <div class="videoclub">
-            <div class="item-slot" data-item="vhs" onclick="selectItem('vhs')">🎥</div>
-            <div class="item-slot" data-item="vinyl" onclick="selectItem('vinyl')">💿</div>
-            <div class="item-slot" data-item="cassette" onclick="selectItem('cassette')">📼</div>
+        <div class="videoclub" id="videoclubSlots">
+            <div class="item-slot" data-item="vhs" onclick="selectItem('vhs')" id="slot-0">🎥</div>
+            <div class="item-slot" data-item="vinyl" onclick="selectItem('vinyl')" id="slot-1">💿</div>
+            <div class="item-slot" data-item="cassette" onclick="selectItem('cassette')" id="slot-2">📼</div>
         </div>
         
         <!-- Elementos dinámicos -->
@@ -82,6 +103,52 @@
         <div class="year-transition" id="yearTransition">
             <div class="year-title" id="yearTitle"></div>
             <div class="year-event" id="yearEvent"></div>
+        </div>
+        
+        <!-- Modal de instrucciones retro -->
+        <div class="retro-modal" id="instructionsModal">
+            <div class="retro-tv">
+                <div class="retro-screen">
+                    <div class="retro-content">
+                        <div class="instructions-title">📼 MANUAL DEL VIDEOCLUB SANDY 📼</div>
+                        <div class="instructions-text">
+                            <div class="instruction-section">
+                                <div class="section-title">🎯 OBJETIVO</div>
+                                <div>Atiende a los clientes  del videoclub antes de que se vayan a Blockbuster</div>
+                            </div>
+                            
+                            <div class="instruction-section">
+                                <div class="section-title">🎮 CÓMO JUGAR</div>
+                                <div>• Los clientes llegan pidiendo VHS 🎥, vinilos 💿 o cassettes 📼</div>
+                                <div>• Haz clic en el ítem correcto para servirlos</div>
+                                <div>• ¡No los hagas esperar mucho tiempo!</div>
+                            </div>
+                            
+                            <div class="instruction-section">
+                                <div class="section-title">⚡ POWER-UPS RETRO</div>
+                                <div>🎧 Walkman - Ralentiza el tiempo</div>
+                                <div>🌟 Madonna - Clientes contentos</div>
+                                <div>🕹️ Nintendo - Puntos dobles</div>
+                            </div>
+                            
+                            <div class="instruction-section">
+                                <div class="section-title">🏆 SISTEMA DE COMBOS</div>
+                                <div>Sirve 3 clientes seguidos sin fallar para aumentar tu multiplicador</div>
+                            </div>
+                            
+                            <div class="instruction-section">
+                                <div class="section-title">📅 PROGRESIÓN</div>
+                                <div>Cada 15 clientes avanzas un año (1987-1992) y aumenta la dificultad</div>
+                            </div>
+                            
+                            <div class="instruction-section retro-warning">
+                                <div>🔊 ¡ACTIVA EL AUDIO PARA LA EXPERIENCIA COMPLETA!</div>
+                            </div>
+                        </div>
+                        <button class="retro-button" onclick="closeInstructions()">📼 VOLVER AL MENÚ</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     

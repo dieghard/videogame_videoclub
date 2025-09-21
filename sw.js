@@ -1,10 +1,14 @@
-const CACHE_NAME = 'retro-videoclub-rush-v1.0.0';
+const CACHE_NAME = 'videoclub-sandy-v1.0.0';
 const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
   '/assets/styles.css',
   '/assets/game.js',
+  '/assets/images/cazafantasmas.jpg',
+  '/assets/images/et.jpg',
+  '/assets/images/madonna.jpg',
+  '/assets/images/volveralfuturo.jpg',
   'https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap',
   'https://fonts.gstatic.com/s/pressstart2p/v14/e3t4euO8T-267oIAQAu6jDQyK3nVivM.woff2'
 ];
