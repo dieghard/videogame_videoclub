@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#6B46C1">
+    <meta name="description" content="Retro VideoClub Rush - Juego arcade retro estilo años 80">
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="VideoClub Rush">
+    
+    <!-- PWA Icons -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%236B46C1'/><rect x='20' y='30' width='60' height='40' fill='%23EC4899' rx='5'/><rect x='30' y='40' width='40' height='20' fill='%236B46C1'/></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%236B46C1' rx='20'/><rect x='38' y='58' width='116' height='76' fill='%23EC4899' rx='10'/><rect x='58' y='76' width='76' height='40' fill='%236B46C1'/></svg>">
+    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%236B46C1' rx='18'/><rect x='36' y='54' width='108' height='72' fill='%23EC4899' rx='9'/><rect x='54' y='72' width='72' height='36' fill='%236B46C1'/></svg>">
+    
+    <title>📼 VideoClub Sandy</title>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Pantalla de menú principal -->
+        <div class="menu-screen" id="mainMenu">
+            <div class="menu-title">📼 VIDEOCLUB SANDY</div>
+            <button class="menu-button" onclick="manualEnableAudio()" id="audioButton">🔊 ACTIVAR AUDIO</button>
+            <button class="menu-button" onclick="startGame()">🎮 JUGAR</button>
+            <button class="menu-button" onclick="showHighScores()">🏆 RÉCORDS</button>
+            <button class="menu-button" onclick="showInstructions()">📖 INSTRUCCIONES</button>
+        </div>
+        
+        <!-- Cabecera del juego -->
+        <div class="header">
+            <div class="logo">📼 VIDEOCLUB SANDY</div>
+            <div class="stats">
+                <div class="stat">
+                    <div>PUNTOS</div>
+                    <div class="stat-value" id="score">0</div>
+                </div>
+                <div class="stat">
+                    <div>VIDAS</div>
+                    <div class="stat-value" id="lives">❤️❤️❤️</div>
+                </div>
+                <div class="stat">
+                    <div>AÑO</div>
+                    <div class="stat-value" id="year">1987</div>
+                </div>
+                <div class="stat">
+                    <div>COMBO</div>
+                    <div class="stat-value" id="combo">x1</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Área principal del juego -->
+        <div class="game-area" id="gameArea">
+            <!-- Elementos decorativos de fondo -->
+            <div class="decoration-frame madonna">
+                <div class="decoration-pixel-art madonna">👑</div>
+                <div class="decoration-label">MADONNA<br/>LIKE A<br/>VIRGIN</div>
+            </div>
+            <div class="decoration-frame bttf">
+                <div class="decoration-pixel-art bttf">🚗</div>
+                <div class="decoration-label">BACK TO<br/>THE<br/>FUTURE</div>
+            </div>
+            <!-- Los clientes aparecerán aquí -->
+        </div>
+        
+        <!-- El videoclub con los items -->
+        <div class="videoclub">
+            <div class="item-slot" data-item="vhs" onclick="selectItem('vhs')">🎥</div>
+            <div class="item-slot" data-item="vinyl" onclick="selectItem('vinyl')">💿</div>
+            <div class="item-slot" data-item="cassette" onclick="selectItem('cassette')">📼</div>
+        </div>
+        
+        <!-- Elementos dinámicos -->
+        <div class="score-display" id="scoreDisplay"></div>
+        <div class="year-transition" id="yearTransition">
+            <div class="year-title" id="yearTitle"></div>
+            <div class="year-event" id="yearEvent"></div>
+        </div>
+    </div>
+    
+    <!-- External JavaScript -->
+    <script src="assets/game.js"></script>
+</body>
+</html>
