@@ -37,6 +37,7 @@
             <button class="menu-button" onclick="showInstructions()">📖 INSTRUCCIONES</button>
             <button class="menu-button" onclick="manualEnableAudio()" id="audioButton">🔊 ACTIVAR AUDIO</button>
             <button class="menu-button pwa-install-btn" onclick="installPWA()" id="installButton">📱 INSTALAR APP</button>
+            <div class="powered-by">Powered by Diego Markiewicz 🧉💖</div>
         </div>
         
         <!-- Cabecera del juego -->
@@ -60,6 +61,7 @@
                     <div class="stat-value" id="combo">x1</div>
                 </div>
             </div>
+            <button class="pause-button" onclick="showPauseModal()" id="pauseButton">⏸️ PAUSA</button>
         </div>
         
         <!-- Área principal del juego -->
@@ -94,6 +96,11 @@
             </div>
             
             <!-- Los clientes aparecerán aquí -->
+        </div>
+        
+        <!-- Contenedor de chat para diálogos -->
+        <div class="chat-container" id="chatContainer">
+            <!-- Los diálogos aparecerán aquí -->
         </div>
         
         <!-- El videoclub con los items -->
@@ -133,6 +140,7 @@
                                 <div class="section-title">⚡ POWER-UPS RETRO</div>
                                 <div>🎧 Walkman - Ralentiza el tiempo</div>
                                 <div>🌟 Madonna - Clientes contentos</div>
+                                <div>🧉☕ Mate o Café - Clientes contentos</div>
                                 <div>🕹️ Nintendo - Puntos dobles</div>
                             </div>
                             
@@ -151,6 +159,36 @@
                             </div>
                         </div>
                         <button class="retro-button" onclick="closeInstructions()">📼 VOLVER AL MENÚ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal de pausa retro -->
+        <div class="retro-modal" id="pauseModal">
+            <div class="retro-tv">
+                <div class="retro-screen">
+                    <div class="retro-content">
+                        <div class="pause-title">⏸️ JUEGO PAUSADO ⏸️</div>
+                        <div class="pause-subtitle">VideoClub Sandy en standby...</div>
+                        <div class="pause-stats">
+                            <div class="pause-stat">
+                                <span>PUNTOS:</span> <span id="pauseScore">0</span>
+                            </div>
+                            <div class="pause-stat">
+                                <span>VIDAS:</span> <span id="pauseLives">❤️❤️❤️</span>
+                            </div>
+                            <div class="pause-stat">
+                                <span>AÑO:</span> <span id="pauseYear">1987</span>
+                            </div>
+                            <div class="pause-stat">
+                                <span>COMBO:</span> <span id="pauseCombo">x1</span>
+                            </div>
+                        </div>
+                        <div class="pause-buttons">
+                            <button class="retro-button pause-resume" onclick="closePauseModal()">▶️ CONTINUAR</button>
+                            <button class="retro-button pause-exit" onclick="exitToMenu()">🚪 SALIR AL MENÚ</button>
+                        </div>
                     </div>
                 </div>
             </div>

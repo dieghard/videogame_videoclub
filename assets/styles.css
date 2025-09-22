@@ -43,6 +43,36 @@ body {
     box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
 }
 
+.pause-button {
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    border: 2px solid #ff6b35;
+    color: #ffffff;
+    padding: 8px 15px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+    transition: all 0.3s ease;
+    animation: pauseButtonGlow 2s ease-in-out infinite alternate;
+}
+
+.pause-button:hover {
+    background: linear-gradient(135deg, #ff7b45, #fa9d2e);
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(255, 107, 53, 0.8);
+}
+
+@keyframes pauseButtonGlow {
+    from {
+        box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+    }
+    to {
+        box-shadow: 0 0 20px rgba(255, 107, 53, 0.7);
+    }
+}
+
 .logo {
     font-size: 18px;
     color: #ff00ff;
@@ -89,8 +119,8 @@ body {
     padding: 20px 10px;
     background: linear-gradient(135deg, rgba(25, 25, 50, 0.8), rgba(40, 40, 80, 0.6));
     border: 2px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(3px);
     -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
 }
 
 .left-wall {
@@ -163,7 +193,7 @@ body {
     min-width: 80px;
 }
 
-/* Display del año prominente */
+/* Display del año en TV de tubos CRT */
 .year-display {
     position: absolute;
     top: 30px;
@@ -171,12 +201,128 @@ body {
     transform: translateX(-50%);
     text-align: center;
     z-index: 20;
-    background: linear-gradient(45deg, #ff00ff, #00ffff);
-    padding: 15px 25px;
-    border-radius: 15px;
-    border: 3px solid #fff;
-    box-shadow: 0 0 30px rgba(255, 0, 255, 0.6);
-    animation: yearPulse 3s ease-in-out infinite;
+    
+    /* TV exterior con marco grueso */
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a, #0a0a0a);
+    border: 12px solid #333;
+    border-radius: 35px;
+    padding: 35px 45px;
+    box-shadow: 
+        0 0 0 6px #444,
+        0 12px 24px rgba(0, 0, 0, 0.8),
+        inset 0 3px 6px rgba(255, 255, 255, 0.1);
+    
+    /* Efecto de TV apagada/encendida */
+    animation: tvFlicker 4s ease-in-out infinite;
+    min-width: 420px;
+    
+    /* Pantalla VGA multicolor interna */
+    &::before {
+        content: '';
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        right: 24px;
+        bottom: 24px;
+        background: 
+            radial-gradient(ellipse at center, 
+                rgba(0, 100, 255, 0.1) 0%, 
+                rgba(255, 0, 255, 0.05) 30%, 
+                rgba(255, 255, 0, 0.05) 60%, 
+                rgba(0, 0, 0, 0.9) 100%),
+            linear-gradient(transparent 50%, rgba(0, 255, 255, 0.02) 50%);
+        background-size: 100% 100%, 100% 2px;
+        border-radius: 18px;
+        border: 3px solid #000;
+        box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.9);
+        z-index: -1;
+    }
+    
+    /* Líneas de escaneo VGA multicolor */
+    &::after {
+        content: '';
+        position: absolute;
+        top: 24px;
+        left: 24px;
+        right: 24px;
+        bottom: 24px;
+        background: repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 255, 255, 0.08) 2px,
+            rgba(255, 0, 255, 0.06) 3px,
+            rgba(255, 255, 0, 0.04) 4px
+        );
+        border-radius: 18px;
+        pointer-events: none;
+        z-index: 2;
+        animation: scanLinesVGA 0.15s linear infinite;
+    }
+}
+
+/* Animaciones CRT */
+@keyframes tvFlicker {
+    0%, 100% { 
+        filter: brightness(1) contrast(1.1);
+        box-shadow: 
+            0 0 0 6px #444,
+            0 12px 24px rgba(0, 0, 0, 0.8),
+            inset 0 3px 6px rgba(255, 255, 255, 0.1);
+    }
+    2%, 18%, 22%, 25%, 53%, 57% {
+        filter: brightness(0.9) contrast(1.2);
+        box-shadow: 
+            0 0 0 6px #555,
+            0 12px 24px rgba(0, 0, 0, 0.9),
+            inset 0 3px 6px rgba(255, 255, 255, 0.2);
+    }
+    30%, 80% {
+        filter: brightness(1.1) contrast(1);
+    }
+}
+
+@keyframes scanLinesVGA {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(5px); }
+}
+
+@keyframes vgaGlowSubtle {
+    0%, 100% { 
+        color: #00ffff;
+        text-shadow: 
+            0 0 5px #00ffff,
+            0 0 10px #00ffff,
+            1px 1px 0 #ff00ff,
+            2px 2px 0 #000;
+    }
+    50% { 
+        color: #ff00ff;
+        text-shadow: 
+            0 0 5px #ff00ff,
+            0 0 10px #ff00ff,
+            1px 1px 0 #00ffff,
+            2px 2px 0 #000;
+    }
+}
+
+@keyframes vgaTextSubtle {
+    0%, 100% { 
+        color: #ffff00;
+        text-shadow: 
+            0 0 3px #ffff00,
+            0 0 6px #ffff00,
+            1px 1px 0 #ff00ff,
+            2px 2px 0 #000;
+    }
+    50% { 
+        color: #00ffff;
+        text-shadow: 
+            0 0 3px #00ffff,
+            0 0 6px #00ffff,
+            1px 1px 0 #ff00ff,
+            2px 2px 0 #000;
+    }
 }
 
 @keyframes yearPulse {
@@ -191,18 +337,43 @@ body {
 }
 
 .year-number {
-    font-size: 32px;
+    font-size: 56px;
     font-weight: bold;
-    color: #fff;
-    text-shadow: 2px 2px 4px #000;
-    margin-bottom: 5px;
+    color: #00ffff;
+    text-shadow: 
+        0 0 5px #00ffff,
+        0 0 10px #00ffff,
+        1px 1px 0 #ff00ff,
+        2px 2px 0 #000;
+    margin-bottom: 12px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 3px;
+    position: relative;
+    z-index: 3;
+    
+    /* Efecto de glow VGA más sutil */
+    animation: vgaGlowSubtle 3s ease-in-out infinite;
 }
 
 .year-nostalgia {
-    font-size: 10px;
+    font-size: 24px;
     color: #ffff00;
-    text-shadow: 1px 1px 2px #000;
+    text-shadow: 
+        0 0 3px #ffff00,
+        0 0 6px #ffff00,
+        1px 1px 0 #ff00ff,
+        2px 2px 0 #000;
     font-style: italic;
+    line-height: 1.3;
+    position: relative;
+    z-index: 3;
+    font-family: 'Courier New', monospace;
+    max-width: 450px;
+    margin: 0 auto;
+    font-weight: bold;
+    
+    /* Efecto VGA más legible */
+    animation: vgaTextSubtle 4s ease-in-out infinite;
 }
 
 @keyframes pulse {
@@ -259,8 +430,8 @@ body {
 
 .customer {
     position: absolute;
-    width: 130px;
-    height: 160px;
+    width: 160px;
+    height: 190px;
     background: linear-gradient(135deg, #ec4899, #be185d);
     border: 2px solid #fff;
     border-radius: 10px;
@@ -268,55 +439,57 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 10px;
+    font-size: 12px;
     transition: all 0.5s ease;
-    z-index: 10;
-    padding: 8px;
+    z-index: 100;
+    padding: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .customer-sprite {
-    font-size: 28px;
-    margin-bottom: 5px;
+    font-size: 32px;
+    margin-bottom: 6px;
 }
 
 .customer-name {
-    font-size: 8px;
+    font-size: 10px;
     color: #fff;
     font-weight: bold;
     text-shadow: 1px 1px 0px #000;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     text-align: center;
 }
 
 .customer-request {
-    font-size: 22px;
+    font-size: 26px;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 15px;
-    padding: 4px 8px;
-    margin-bottom: 5px;
+    padding: 5px 9px;
+    margin-bottom: 6px;
 }
 
 .customer-product {
-    font-size: 7px;
+    font-size: 9px;
     color: #fff;
     text-align: center;
-    line-height: 1.1;
-    margin-bottom: 8px;
+    line-height: 1.2;
+    margin-bottom: 10px;
     background: rgba(0, 0, 0, 0.3);
-    padding: 3px 5px;
+    padding: 4px 6px;
     border-radius: 5px;
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-weight: bold;
 }
 
 .patience-bar {
-    width: 80%;
-    height: 8px;
+    width: 90%;
+    height: 10px;
     background: rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
+    border-radius: 5px;
     overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .patience-fill {
@@ -324,6 +497,140 @@ body {
     background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00);
     transition: width 0.1s linear;
     border-radius: 4px;
+}
+
+.patience-label {
+    font-size: 8px;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 4px;
+    font-weight: bold;
+    text-shadow: 1px 1px 0px #000;
+}
+
+/* ========== CONTENEDOR DE CHAT ========== */
+.chat-container {
+    position: absolute;
+    bottom: 30%; /* Justo arriba del videoclub */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    height: 35%;
+    display: flex;
+    flex-direction: column-reverse; /* Los nuevos elementos aparecen abajo */
+    justify-content: flex-start;
+    align-items: center;
+    overflow: hidden;
+    z-index: 100;
+    pointer-events: none;
+    gap: 8px;
+    padding: 10px;
+}
+
+.chat-message {
+    background: rgba(0, 0, 0, 0.95);
+    border: 2px solid #ffffff;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin: 0;
+    max-width: 100%;
+    min-width: 280px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s ease-out;
+    animation: chatSlideIn 0.3s ease-out;
+}
+
+.chat-message.empleado {
+    border-color: #ff00ff;
+    background: linear-gradient(135deg, rgba(255, 0, 255, 0.2), rgba(0, 0, 0, 0.9));
+}
+
+.chat-message.cliente {
+    border-color: #00ffff;
+    background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(0, 0, 0, 0.9));
+}
+
+.chat-message.chisme {
+    border-color: #ffff00;
+    background: linear-gradient(135deg, rgba(255, 255, 0, 0.2), rgba(0, 0, 0, 0.9));
+}
+
+.chat-message.curiosidad {
+    border-color: #ff6600;
+    background: linear-gradient(135deg, rgba(255, 102, 0, 0.2), rgba(0, 0, 0, 0.9));
+}
+
+.chat-message.videoclub {
+    border-color: #00ff00;
+    background: linear-gradient(135deg, rgba(0, 255, 0, 0.2), rgba(0, 0, 0, 0.9));
+}
+
+.chat-message.removing {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+}
+
+.chat-speaker {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.chat-message.empleado .chat-speaker {
+    color: #ff00ff;
+}
+
+.chat-message.cliente .chat-speaker {
+    color: #00ffff;
+}
+
+.chat-message.chisme .chat-speaker {
+    color: #ffff00;
+}
+
+.chat-message.curiosidad .chat-speaker {
+    color: #ff6600;
+}
+
+.chat-message.videoclub .chat-speaker {
+    color: #00ff00;
+}
+
+.chat-text {
+    font-size: 14px;
+    color: #ffffff;
+    line-height: 1.3;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+@keyframes chatSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes chatSlideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.8);
+    }
 }
 
 .power-up {
@@ -409,6 +716,29 @@ body {
     border-color: #00ff00;
 }
 
+.powered-by {
+    margin-top: 30px;
+    font-size: 14px;
+    color: #ffffff;
+    text-align: center;
+    opacity: 0.8;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    background: linear-gradient(135deg, rgba(255, 0, 255, 0.1), rgba(0, 255, 255, 0.1));
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 10px 20px;
+    animation: poweredByGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes poweredByGlow {
+    from {
+        box-shadow: 0 0 5px rgba(255, 0, 255, 0.5);
+    }
+    to {
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+    }
+}
+
 .pwa-install-btn {
     background: linear-gradient(135deg, #ff6b35, #f7931e) !important;
     border-color: #ff6b35 !important;
@@ -468,23 +798,62 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 99;
+    z-index: 9999;
     opacity: 0;
     pointer-events: none;
 }
 
 .year-title {
-    font-size: 36px;
+    font-size: 48px;
     color: #ff00ff;
-    text-shadow: 0 0 30px #ff00ff;
-    margin-bottom: 20px;
+    text-shadow: 
+        0 0 30px #ff00ff,
+        0 0 60px #ff00ff,
+        2px 2px 4px rgba(0, 0, 0, 0.8);
+    margin-bottom: 30px;
+    font-weight: bold;
+    animation: yearTitlePulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes yearTitlePulse {
+    from {
+        transform: scale(1);
+        text-shadow: 
+            0 0 30px #ff00ff,
+            0 0 60px #ff00ff,
+            2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+    to {
+        transform: scale(1.05);
+        text-shadow: 
+            0 0 40px #ff00ff,
+            0 0 80px #ff00ff,
+            2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
 }
 
 .year-event {
-    font-size: 14px;
+    font-size: 16px;
     color: #00ffff;
     text-align: center;
     max-width: 80%;
+    text-shadow: 
+        0 0 10px #00ffff,
+        1px 1px 2px rgba(0, 0, 0, 0.8);
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 15px 20px;
+    animation: yearEventGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes yearEventGlow {
+    from {
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+    to {
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    }
 }
 
 .particle {
@@ -516,8 +885,9 @@ body {
     border-radius: 10px;
     animation: decorationFloat 4s ease-in-out infinite;
     z-index: 5;
-    backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
 }
 
 .decoration-frame.madonna {
@@ -656,6 +1026,93 @@ body {
     box-shadow: 0 5px 20px rgba(255, 0, 255, 0.7);
 }
 
+/* Estilos específicos para modal de pausa */
+.pause-title {
+    font-size: 24px;
+    color: #ff00ff;
+    text-shadow: 0 0 20px #ff00ff;
+    margin-bottom: 10px;
+    text-align: center;
+    animation: pauseTitlePulse 2s ease-in-out infinite alternate;
+}
+
+.pause-subtitle {
+    font-size: 12px;
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff;
+    margin-bottom: 20px;
+    text-align: center;
+    opacity: 0.8;
+}
+
+.pause-stats {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.pause-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.pause-stat span:first-child {
+    color: #ffff00;
+    font-weight: bold;
+}
+
+.pause-stat span:last-child {
+    color: #00ff00;
+    text-shadow: 0 0 5px #00ff00;
+}
+
+.pause-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pause-resume {
+    background: linear-gradient(135deg, #00ff00, #00aa00) !important;
+    border-color: #00ff00 !important;
+}
+
+.pause-resume:hover {
+    background: linear-gradient(135deg, #00aa00, #00ff00) !important;
+    box-shadow: 0 5px 20px rgba(0, 255, 0, 0.7) !important;
+}
+
+.pause-exit {
+    background: linear-gradient(135deg, #ff4444, #aa0000) !important;
+    border-color: #ff4444 !important;
+}
+
+.pause-exit:hover {
+    background: linear-gradient(135deg, #aa0000, #ff4444) !important;
+    box-shadow: 0 5px 20px rgba(255, 68, 68, 0.7) !important;
+}
+
+@keyframes pauseTitlePulse {
+    from {
+        text-shadow: 0 0 20px #ff00ff;
+        transform: scale(1);
+    }
+    to {
+        text-shadow: 0 0 30px #ff00ff, 0 0 40px #ff00ff;
+        transform: scale(1.02);
+    }
+}
+
 @keyframes pulseWarning {
     0%, 100% { 
         box-shadow: 0 0 5px rgba(255, 255, 0, 0.3);
@@ -760,6 +1217,105 @@ body {
     box-shadow: 0 5px 20px rgba(255, 0, 255, 0.7);
 }
 
+/* ========== PHRASE SYSTEM ========== */
+.phrase-overlay {
+    position: absolute;
+    top: 65%; /* Posición base: 65% desde arriba (35% desde abajo) */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.95);
+    border: var(--border-width-md) solid;
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    text-align: center;
+    z-index: 100;
+    box-shadow: var(--shadow-xl) rgba(0, 0, 0, 0.8);
+    animation: phraseSlideIn var(--transition-slow) ease-out;
+    max-width: 90%;
+    min-width: 18.75rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.phrase-overlay.empleado {
+    border-color: var(--color-primary);
+    background: linear-gradient(135deg, rgba(255, 0, 255, 0.15), rgba(128, 0, 255, 0.15));
+}
+
+.phrase-overlay.empleado .phrase-speaker {
+    color: var(--color-primary);
+}
+
+.phrase-overlay.cliente {
+    border-color: var(--color-secondary);
+    background: linear-gradient(135deg, rgba(0, 255, 255, 0.15), rgba(0, 128, 255, 0.15));
+}
+
+.phrase-overlay.cliente .phrase-speaker {
+    color: var(--color-secondary);
+}
+
+.phrase-overlay.chisme {
+    border-color: var(--color-warning);
+    background: linear-gradient(135deg, rgba(255, 255, 0, 0.15), rgba(255, 128, 0, 0.15));
+}
+
+.phrase-overlay.chisme .phrase-speaker {
+    color: var(--color-warning);
+}
+
+.phrase-overlay.curiosidad {
+    border-color: var(--color-success);
+    background: linear-gradient(135deg, rgba(0, 255, 0, 0.15), rgba(0, 128, 128, 0.15));
+}
+
+.phrase-overlay.curiosidad .phrase-speaker {
+    color: var(--color-success);
+}
+
+/* Posiciones alternativas para evitar superposición */
+.phrase-overlay.position-1 {
+    top: 65%; /* Más abajo - justo arriba del videoclub */
+}
+
+.phrase-overlay.position-2 {
+    top: 55%; /* Arriba de position-1 */
+}
+
+.phrase-overlay.position-3 {
+    top: 45%; /* Arriba de position-2 */
+}
+
+.phrase-overlay.position-4 {
+    top: 35%; /* Más arriba de todas */
+    
+    .phrase-speaker {
+        font-size: var(--font-size-sm);
+        font-weight: bold;
+        margin-bottom: var(--spacing-sm);
+        text-transform: uppercase;
+        text-shadow: 1px 1px 2px var(--color-black);
+    }
+    
+    .phrase-text {
+        font-size: var(--font-size-base);
+        color: var(--color-white);
+        text-shadow: 1px 1px 2px var(--color-black);
+        line-height: 1.4;
+        font-style: italic;
+    }
+}
+
+@keyframes phraseSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
 /* ========== RESPONSIVE DESIGN OPTIMIZADO ========== */
 
 /* DISPOSITIVOS ULTRA PEQUEÑOS (320px - 360px) */
@@ -768,11 +1324,40 @@ body {
         font-size: 14px; /* Base más grande */
     }
     
-    /* Year Display mucho más visible */
+    /* Year Display CRT TV más pequeña para móvil */
     .year-display {
         top: 10px;
-        padding: 12px 20px;
-        border-width: 3px;
+        padding: 20px 25px;
+        border: 8px solid #333;
+        border-radius: 25px;
+        min-width: 320px;
+    }
+    
+    .year-display::before {
+        top: 16px;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        border-radius: 14px;
+    }
+    
+    .year-display::after {
+        top: 16px;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        border-radius: 14px;
+    }
+    
+    .year-number {
+        font-size: 32px !important;
+        margin-bottom: 8px !important;
+    }
+    
+    .year-nostalgia {
+        font-size: 16px !important;
+        max-width: 320px !important;
+        font-weight: bold !important;
         min-width: 280px;
     }
     
@@ -910,11 +1495,39 @@ body {
     }
     
     /* Frases más legibles */
-    .frase-videoclub {
-        font-size: 0.625rem !important; /* 10px */
-        padding: 0.75rem 1rem !important;
-        max-width: 280px !important;
+    .phrase-overlay {
+        font-size: var(--font-size-base) !important; /* 10px */
+        padding: var(--spacing-md) var(--spacing-lg) !important;
+        max-width: 17.5rem !important; /* 280px */
         line-height: 1.4 !important;
+        min-width: 15rem !important;
+        top: 80% !important; /* Muy abajo por defecto */
+        
+        &.position-1 {
+            top: 80% !important;
+        }
+        
+        &.position-2 {
+            top: 70% !important;
+        }
+        
+        &.position-3 {
+            top: 60% !important;
+        }
+        
+        &.position-4 {
+            top: 50% !important;
+        }
+        
+        .phrase-speaker {
+            font-size: var(--font-size-xs) !important; /* 6px */
+            margin-bottom: var(--spacing-xs) !important;
+        }
+        
+        .phrase-text {
+            font-size: var(--font-size-sm) !important; /* 8px */
+            line-height: 1.3 !important;
+        }
     }
     
     /* Item slots más grandes */
@@ -930,6 +1543,127 @@ body {
         width: 95%;
         height: 30%;
         border-width: 3px;
+    }
+    
+    /* Chat responsivo */
+    .chat-container {
+        width: 95%;
+        height: 25%;
+        bottom: 35%;
+        gap: 6px;
+        padding: 8px;
+    }
+    
+    .chat-message {
+        min-width: 250px;
+        padding: 8px 12px;
+    }
+    
+    .chat-speaker {
+        font-size: 10px;
+        margin-bottom: 4px;
+    }
+    
+    .chat-text {
+        font-size: 12px;
+    }
+    
+    /* Botón de pausa responsivo */
+    .pause-button {
+        padding: 6px 10px;
+        font-size: 10px;
+    }
+    
+    /* Frases arriba del videoclub */
+    .phrase-overlay {
+        &.position-1 {
+            top: 65% !important;
+        }
+        
+        &.position-2 {
+            top: 55% !important;
+        }
+        
+        &.position-3 {
+            top: 45% !important;
+        }
+        
+        &.position-4 {
+            top: 35% !important;
+        }
+    }
+}
+
+/* Extra Extra Small Devices (very small phones) - 320px and below */
+@media (max-width: 320px) {
+    .videoclub {
+        width: 98%;
+        height: 35%;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 2px;
+        border-radius: 10px 10px 0 0;
+        z-index: 200;
+    }
+    
+    /* Frases arriba del videoclub más alto */
+    .phrase-overlay {
+        &.position-1 {
+            top: 60% !important; /* Arriba del videoclub de 35% */
+        }
+        
+        &.position-2 {
+            top: 50% !important;
+        }
+        
+        &.position-3 {
+            top: 40% !important;
+        }
+        
+        &.position-4 {
+            top: 30% !important;
+        }
+    }
+    
+    .item-slot {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        border-width: 1px;
+    }
+    
+    .game-container {
+        padding: 2px;
+    }
+    
+    .header {
+        padding: 5px;
+        font-size: 10px;
+    }
+    
+    .logo {
+        font-size: 12px;
+    }
+    
+    .stats {
+        gap: 8px;
+    }
+    
+    .stat {
+        font-size: 6px;
+    }
+    
+    .stat-value {
+        font-size: 10px;
+    }
+    
+    .powered-by {
+        margin-top: 15px;
+        font-size: 10px;
+        padding: 6px 10px;
+        margin-left: 5px;
+        margin-right: 5px;
     }
 }
 
@@ -1017,38 +1751,62 @@ body {
         border-width: 1px;
     }
     
-    /* Customer compacto */
+    /* Chat en móviles */
+    .chat-container {
+        width: 95%;
+        height: 25%;
+        bottom: 35%;
+        gap: 6px;
+        padding: 8px;
+    }
+    
+    .chat-message {
+        min-width: 250px;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .chat-speaker {
+        font-size: 10px;
+        margin-bottom: 4px;
+    }
+    
+    .chat-text {
+        font-size: 12px;
+    }
     .customer {
-        width: 80px;
-        height: 100px;
-        padding: 4px;
+        width: 120px;
+        height: 140px;
+        padding: 6px;
         border-width: 1px;
+        font-size: 10px;
     }
     
     .customer-sprite {
-        font-size: 16px;
-        margin-bottom: 2px;
+        font-size: 24px;
+        margin-bottom: 4px;
     }
     
     .customer-name {
-        font-size: 5px;
-        margin-bottom: 2px;
+        font-size: 8px;
+        margin-bottom: 4px;
     }
     
     .customer-request {
-        font-size: 12px;
-        padding: 2px 4px;
-        margin-bottom: 2px;
+        font-size: 18px;
+        padding: 3px 6px;
+        margin-bottom: 4px;
     }
     
     .customer-product {
-        font-size: 4px;
-        margin-bottom: 4px;
-        padding: 2px 3px;
+        font-size: 7px;
+        margin-bottom: 6px;
+        padding: 3px 4px;
     }
     
     .patience-bar {
-        height: 4px;
+        height: 6px;
+        width: 80%;
     }
     
     /* Power-ups compactos */
@@ -1074,6 +1832,14 @@ body {
         min-height: 50px;
         width: 90%;
         max-width: 300px;
+    }
+    
+    .powered-by {
+        margin-top: 20px;
+        font-size: 12px;
+        padding: 8px 15px;
+        margin-left: 8px;
+        margin-right: 8px;
     }
     
     /* Score display compacto */
@@ -1234,35 +2000,38 @@ body {
     
     /* Customer mediano */
     .customer {
-        width: 100px;
-        height: 130px;
-        padding: 6px;
+        width: 140px;
+        height: 170px;
+        padding: 8px;
+        font-size: 11px;
     }
     
     .customer-sprite {
-        font-size: 20px;
-        margin-bottom: 3px;
+        font-size: 28px;
+        margin-bottom: 5px;
     }
     
     .customer-name {
-        font-size: 6px;
-        margin-bottom: 3px;
+        font-size: 9px;
+        margin-bottom: 5px;
     }
     
     .customer-request {
-        font-size: 16px;
-        padding: 3px 6px;
-        margin-bottom: 3px;
+        font-size: 22px;
+        padding: 4px 7px;
+        margin-bottom: 5px;
     }
     
     .customer-product {
-        font-size: 5px;
-        margin-bottom: 6px;
-        padding: 2px 4px;
+        font-size: 8px;
+        margin-bottom: 8px;
+        padding: 3px 5px;
     }
     
     .patience-bar {
-        height: 6px;
+        height: 8px;
+        width: 85%;
+    }
     }
     
     /* Power-ups medianos */
@@ -1363,6 +2132,56 @@ body {
     .crt-button {
         padding: 12px 24px;
         font-size: 9px;
+    }
+    
+    /* Chat en tablets */
+    .chat-container {
+        width: 85%;
+        height: 30%;
+        bottom: 25%;
+    }
+    
+    .chat-message {
+        min-width: 320px;
+        padding: 10px 14px;
+    }
+    
+    .chat-speaker {
+        font-size: 11px;
+    }
+    
+    .chat-text {
+        font-size: 13px;
+    }
+    .phrase-overlay {
+        font-size: var(--font-size-md);
+        padding: var(--spacing-lg) var(--spacing-xl);
+        max-width: 25rem;
+        min-width: 20rem;
+        
+        &.position-1 {
+            top: 65%;
+        }
+        
+        &.position-2 {
+            top: 55%;
+        }
+        
+        &.position-3 {
+            top: 45%;
+        }
+        
+        &.position-4 {
+            top: 35%;
+        }
+        
+        .phrase-speaker {
+            font-size: var(--font-size-sm);
+        }
+        
+        .phrase-text {
+            font-size: var(--font-size-base);
+        }
     }
 }
 
@@ -1573,6 +2392,22 @@ body {
         padding: 6px 12px;
         margin-top: 10px;
     }
+    
+    /* Frases en desktop */
+    .phrase-overlay {
+        font-size: var(--font-size-lg);
+        padding: var(--spacing-xl) var(--spacing-2xl);
+        max-width: 37.5rem;
+        min-width: 25rem;
+        
+        .phrase-speaker {
+            font-size: var(--font-size-md);
+        }
+        
+        .phrase-text {
+            font-size: var(--font-size-lg);
+        }
+    }
 }
 
 /* Ultra-wide screens */
@@ -1677,8 +2512,9 @@ body {
         0 0 15px rgba(255, 0, 255, 0.6),
         inset 0 0 10px rgba(255, 255, 255, 0.1);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
     animation: fraseGlow 3s ease-in-out infinite alternate;
 }
 
@@ -1821,12 +2657,14 @@ body {
     body {
         font-size: 14px !important;
         -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
         -webkit-font-smoothing: antialiased;
     }
     
     .game-container {
-        height: 100vh;
-        height: -webkit-fill-available; /* Fix para Safari iOS */
+        height: -webkit-fill-available;
+        height: -webkit-fill-available;
+        height: 100vh; /* Fix para Safari iOS */
     }
     
     .menu-screen {

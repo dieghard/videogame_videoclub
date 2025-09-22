@@ -368,52 +368,150 @@ function mostrarFraseAleatoria() {
     fraseTimer = setTimeout(mostrarFraseAleatoria, siguienteFrase);
 }
 
-// Función para mostrar frases en el área del videoclub
-function mostrarFraseEnVideoclub(texto, tipo = 'default') {
-    // Crear elemento para la frase
-    const fraseElement = document.createElement('div');
-    fraseElement.className = `frase-videoclub frase-${tipo}`;
-    fraseElement.textContent = texto;
+// Función específica para diálogos del juego (cliente/empleado)
+function mostrarDialogoJuego(texto, tipo = 'empleado') {
+    console.log('Mostrando diálogo en chat:', tipo, texto);
     
-    // Agregar estilos
-    fraseElement.style.position = 'absolute';
-    fraseElement.style.bottom = '20px';
-    fraseElement.style.left = '20px';
-    fraseElement.style.background = 'rgba(139, 92, 246, 0.9)';
-    fraseElement.style.color = '#fff';
-    fraseElement.style.padding = '10px 15px';
-    fraseElement.style.borderRadius = '10px';
-    fraseElement.style.fontFamily = "'Press Start 2P', monospace";
-    fraseElement.style.fontSize = '8px';
-    fraseElement.style.maxWidth = '300px';
-    fraseElement.style.lineHeight = '1.4';
-    fraseElement.style.zIndex = '500';
-    fraseElement.style.border = '2px solid #ff00ff';
-    fraseElement.style.boxShadow = '0 0 15px rgba(255, 0, 255, 0.5)';
-    fraseElement.style.opacity = '0';
-    fraseElement.style.transform = 'translateX(-20px)';
-    fraseElement.style.transition = 'all 0.5s ease';
+    const chatContainer = document.getElementById('chatContainer');
+    if (!chatContainer) {
+        console.error('No se encontró el contenedor de chat');
+        return;
+    }
     
-    // Agregar al juego
-    const gameArea = document.getElementById('gameArea');
-    gameArea.appendChild(fraseElement);
+    // Limpiar mensajes muy antiguos (mantener máximo 4 mensajes)
+    const mensajesExistentes = chatContainer.querySelectorAll('.chat-message');
+    if (mensajesExistentes.length >= 4) {
+        // Remover los mensajes más antiguos (que están arriba en el flexbox column-reverse)
+        const mensajesARemover = Array.from(mensajesExistentes).slice(4);
+        mensajesARemover.forEach(mensaje => {
+            mensaje.classList.add('removing');
+            setTimeout(() => {
+                if (mensaje.parentNode) {
+                    mensaje.parentNode.removeChild(mensaje);
+                }
+            }, 300);
+        });
+    }
     
-    // Animación de entrada
-    setTimeout(() => {
-        fraseElement.style.opacity = '1';
-        fraseElement.style.transform = 'translateX(0)';
-    }, 100);
+    // Crear nuevo mensaje de chat
+    const chatMessage = document.createElement('div');
+    chatMessage.className = `chat-message ${tipo}`;
     
-    // Remover después de 4 segundos
-    setTimeout(() => {
-        fraseElement.style.opacity = '0';
-        fraseElement.style.transform = 'translateX(-20px)';
-        setTimeout(() => {
-            if (fraseElement.parentNode) {
-                fraseElement.parentNode.removeChild(fraseElement);
+    // Configurar speaker según el tipo
+    let speaker = '';
+    switch(tipo) {
+        case 'empleado':
+            speaker = 'EMPLEADO';
+            break;
+        case 'cliente':
+            // Extraer el nombre del cliente del texto (formato: "Nombre: mensaje")
+            const colonIndex = texto.indexOf(':');
+            if (colonIndex > 0) {
+                speaker = texto.substring(0, colonIndex).toUpperCase();
+            } else {
+                speaker = 'CLIENTE';
             }
-        }, 500);
-    }, 4000);
+            break;
+        default:
+            speaker = 'VIDEOCLUB';
+    }
+    
+    // Limpiar el texto para clientes (remover el nombre del inicio)
+    let textoLimpio = texto;
+    if (tipo === 'cliente') {
+        const colonIndex = texto.indexOf(':');
+        if (colonIndex > 0) {
+            textoLimpio = texto.substring(colonIndex + 1).trim();
+        }
+    }
+    
+    chatMessage.innerHTML = `
+        <div class="chat-speaker">${speaker}</div>
+        <div class="chat-text">${textoLimpio}</div>
+    `;
+    
+    // Agregar al contenedor (aparece abajo debido a column-reverse)
+    chatContainer.appendChild(chatMessage);
+    
+    // Auto-eliminar después de 6 segundos
+    setTimeout(() => {
+        if (chatMessage.parentNode) {
+            chatMessage.classList.add('removing');
+            setTimeout(() => {
+                if (chatMessage.parentNode) {
+                    chatMessage.parentNode.removeChild(chatMessage);
+                }
+            }, 300);
+        }
+    }, 6000);
+    
+    console.log('Mensaje agregado al chat:', chatMessage);
+}
+
+// Función para mostrar frases en el área del videoclub (ahora usando el chat)
+function mostrarFraseEnVideoclub(texto, tipo = 'default') {
+    // Usar el contenedor de chat para todas las frases
+    const chatContainer = document.getElementById('chatContainer');
+    
+    // Crear mensaje de chat
+    const chatMessage = document.createElement('div');
+    chatMessage.className = 'chat-message';
+    
+    // Determinar el tipo de mensaje para styling
+    let messageClass = '';
+    let speaker = '';
+    
+    switch(tipo) {
+        case 'empleado':
+            messageClass = 'empleado';
+            speaker = 'EMPLEADO';
+            break;
+        case 'cliente':
+            messageClass = 'cliente';
+            speaker = 'CLIENTE';
+            break;
+        case 'chisme':
+            messageClass = 'chisme';
+            speaker = 'CHISME';
+            break;
+        case 'curiosidad':
+            messageClass = 'curiosidad';
+            speaker = 'CURIOSIDAD';
+            break;
+        default:
+            messageClass = 'videoclub';
+            speaker = 'VIDEOCLUB';
+    }
+    
+    chatMessage.classList.add(messageClass);
+    
+    // Crear estructura del mensaje
+    chatMessage.innerHTML = `
+        <div class="chat-speaker">${speaker}</div>
+        <div class="chat-text">${texto}</div>
+    `;
+    
+    // Agregar animación de entrada
+    chatMessage.style.animation = 'chatSlideIn 0.3s ease-out';
+    
+    // Agregar al contenedor de chat
+    chatContainer.appendChild(chatMessage);
+    
+    // Mantener máximo 6 mensajes en el chat
+    const allMessages = chatContainer.querySelectorAll('.chat-message');
+    if (allMessages.length > 6) {
+        // Remover los mensajes más antiguos (los de arriba)
+        for (let i = 0; i < allMessages.length - 6; i++) {
+            chatContainer.removeChild(allMessages[i]);
+        }
+    }
+    
+    // Remover mensaje después de 8 segundos
+    setTimeout(() => {
+        if (chatMessage.parentNode) {
+            chatMessage.parentNode.removeChild(chatMessage);
+        }
+    }, 8000);
 }
 
 // Función para iniciar el sistema de frases
@@ -435,12 +533,33 @@ function detenerSistemaFrases() {
     }
     
     // Remover frases existentes
-    const frasesExistentes = document.querySelectorAll('.frase-videoclub');
+    const frasesExistentes = document.querySelectorAll('.phrase-overlay');
     frasesExistentes.forEach(frase => {
         if (frase.parentNode) {
             frase.parentNode.removeChild(frase);
         }
     });
+}
+
+// Función para limpiar todos los mensajes del chat
+function limpiarChat() {
+    const chatContainer = document.getElementById('chatContainer');
+    if (chatContainer) {
+        // Obtener todos los mensajes del chat
+        const mensajes = chatContainer.querySelectorAll('.chat-message');
+        
+        // Agregar animación de salida y luego remover
+        mensajes.forEach((mensaje, index) => {
+            setTimeout(() => {
+                mensaje.style.animation = 'chatSlideOut 0.3s ease-in forwards';
+                setTimeout(() => {
+                    if (mensaje.parentNode) {
+                        mensaje.parentNode.removeChild(mensaje);
+                    }
+                }, 300); // Esperar que termine la animación
+            }, index * 50); // Escalonar las animaciones
+        });
+    }
 }
 
 // Sistema de Audio Web Audio API
@@ -449,6 +568,7 @@ class ChiptuneAudio {
         this.audioContext = null;
         this.masterGain = null;
         this.isPlaying = false;
+        this.wasPlaying = false; // Para manejar pausa
         this.backgroundMusic = null;
         this.backgroundTimeouts = []; // Array para gestionar timeouts
         this.initAudio();
@@ -576,6 +696,35 @@ class ChiptuneAudio {
         // Limpiar todos los timeouts pendientes
         this.backgroundTimeouts.forEach(timeout => clearTimeout(timeout));
         this.backgroundTimeouts = [];
+    }
+    
+    pauseBackgroundMusic() {
+        if (!this.isPlaying || !this.audioContext) return;
+        
+        this.wasPlaying = true;
+        this.isPlaying = false;
+        
+        if (this.backgroundMusic) {
+            try {
+                this.backgroundMusic.stop();
+                this.backgroundMusic.disconnect();
+            } catch(e) {
+                // Ignorar errores si ya está desconectado
+            }
+            this.backgroundMusic = null;
+        }
+        
+        // Pausar todos los timeouts pendientes
+        this.backgroundTimeouts.forEach(timeout => clearTimeout(timeout));
+        this.backgroundTimeouts = [];
+    }
+    
+    resumeBackgroundMusic() {
+        if (!this.wasPlaying || this.isPlaying || !this.audioContext || !audioEnabled) return;
+        
+        this.wasPlaying = false;
+        this.isPlaying = true;
+        this.playBackgroundLoop();
     }
     
     // Melodías inspiradas en éxitos de los 80s
@@ -931,6 +1080,9 @@ function startGame() {
     // Limpiar todos los timers previos
     clearAllGameTimers();
     
+    // Limpiar el chat al iniciar nuevo juego
+    limpiarChat();
+    
     // Ocultar menú y mostrar elementos del juego
     document.getElementById('mainMenu').style.display = 'none';
     document.querySelector('.header').style.display = 'flex';
@@ -1046,6 +1198,14 @@ function selectItem(itemType) {
         gameState.selectedItem = itemType;
         document.querySelector(`[data-item="${itemType}"]`).classList.add('selected');
         
+        // Mostrar frase del empleado
+        const itemNames = {
+            'vhs': 'VHS',
+            'vinyl': 'Vinilo', 
+            'cassette': 'Cassette'
+        };
+        mostrarDialogoJuego(`Hola, claro, tomá: ${itemNames[itemType]}`, 'empleado');
+        
         // Vibración más fuerte para selección exitosa
         triggerVibration([50]);
         
@@ -1086,6 +1246,14 @@ function serveCustomer() {
         // Sonido de acierto
         playSound('correct');
         
+        // Mostrar frase de confirmación
+        const itemNames = {
+            'vhs': 'VHS',
+            'vinyl': 'Vinilo', 
+            'cassette': 'Cassette'
+        };
+        mostrarDialogoJuego(`Perfecto, aquí tenés tu ${itemNames[gameState.selectedItem]}`, 'empleado');
+        
         // Vibración de éxito
         triggerVibration([60, 30, 60]);
         
@@ -1103,6 +1271,9 @@ function serveCustomer() {
         
         // Sonido de error
         playSound('wrong');
+        
+        // Mostrar frase de error
+        mostrarDialogoJuego('¡Ups! Eso no era lo que pedí...', 'cliente');
         
         // Vibración de error (más intensa)
         triggerVibration([100, 50, 100, 50, 100]);
@@ -1146,6 +1317,11 @@ function spawnCustomer() {
     
     // Animar entrada
     animateCustomerEntry(customerElement, gameState.customers.length - 1);
+    
+    // Mostrar frase del cliente
+    setTimeout(() => {
+        mostrarDialogoJuego(`${customerName}: Hola quiero: ${specificProduct}`, 'cliente');
+    }, 500); // Esperar un poco para que aparezca el cliente
     
     // Programar siguiente cliente
     const spawnDelay = Math.max(1000, gameConfig.customerSpawnRate - (gameState.difficulty * 200));
@@ -1504,6 +1680,9 @@ function gameOver() {
     // Detener sistema de frases nostálgicas
     detenerSistemaFrases();
     
+    // Limpiar todos los mensajes del chat
+    limpiarChat();
+    
     // Detener música de fondo completamente
     audioSystem.stopBackgroundMusic();
     
@@ -1810,13 +1989,6 @@ document.addEventListener('keydown', (e) => {
         case 'e':
         case 'E':
             selectItem('cassette');
-            break;
-        case 'Escape':
-            if (confirm('¿Pausar juego?')) {
-                gameState.isPlaying = false;
-                audioSystem.stopBackgroundMusic();
-                document.getElementById('mainMenu').style.display = 'flex';
-            }
             break;
         case 'm':
         case 'M':
@@ -2229,3 +2401,150 @@ window.addEventListener('resize', () => {
         });
     }
 });
+
+// Sistema de pausa del juego
+let gamePaused = false;
+let pausedTimers = [];
+
+// Event listener para tecla Escape
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && gameState.isPlaying && !gamePaused) {
+        showPauseModal();
+    }
+});
+
+// Mostrar modal de pausa
+function showPauseModal() {
+    if (!gameState.isPlaying) return;
+    
+    gamePaused = true;
+    
+    // Pausar todos los timers del juego
+    pauseAllGameTimers();
+    
+    // Actualizar estadísticas en el modal
+    updatePauseStats();
+    
+    // Mostrar modal
+    const pauseModal = document.getElementById('pauseModal');
+    pauseModal.style.display = 'flex';
+    setTimeout(() => {
+        pauseModal.classList.add('show');
+    }, 10);
+    
+    // Pausar música
+    if (audioSystem && audioSystem.isPlaying) {
+        audioSystem.pauseBackgroundMusic();
+    }
+}
+
+// Cerrar modal de pausa y continuar juego
+function closePauseModal() {
+    if (!gamePaused) return;
+    
+    const pauseModal = document.getElementById('pauseModal');
+    pauseModal.classList.remove('show');
+    
+    setTimeout(() => {
+        pauseModal.style.display = 'none';
+        gamePaused = false;
+        
+        // Reanudar timers
+        resumeAllGameTimers();
+        
+        // Reanudar música
+        if (audioSystem) {
+            audioSystem.resumeBackgroundMusic();
+        }
+    }, 300);
+}
+
+// Salir al menú principal
+function exitToMenu() {
+    const pauseModal = document.getElementById('pauseModal');
+    pauseModal.classList.remove('show');
+    
+    setTimeout(() => {
+        pauseModal.style.display = 'none';
+        gamePaused = false;
+        
+        // Terminar juego y volver al menú
+        gameOver();
+        setTimeout(() => {
+            // Ocultar cualquier modal de game over
+            const crtModal = document.querySelector('.crt-modal');
+            if (crtModal) {
+                crtModal.style.display = 'none';
+            }
+            
+            // Mostrar menú principal
+            document.getElementById('gameArea').style.display = 'none';
+            document.querySelector('.header').style.display = 'none';
+            document.getElementById('mainMenu').style.display = 'flex';
+        }, 500);
+    }, 300);
+}
+
+// Actualizar estadísticas en modal de pausa
+function updatePauseStats() {
+    document.getElementById('pauseScore').textContent = gameState.score;
+    document.getElementById('pauseLives').textContent = '❤️'.repeat(gameState.lives);
+    document.getElementById('pauseYear').textContent = gameState.year;
+    document.getElementById('pauseCombo').textContent = 'x' + gameState.combo;
+}
+
+// Pausar todos los timers del juego
+function pauseAllGameTimers() {
+    // Guardar y limpiar timers de spawn
+    if (gameTimers.customerSpawn) {
+        clearTimeout(gameTimers.customerSpawn);
+        gameTimers.customerSpawn = null;
+    }
+    
+    if (gameTimers.powerUpSpawn) {
+        clearTimeout(gameTimers.powerUpSpawn);
+        gameTimers.powerUpSpawn = null;
+    }
+    
+    // Pausar timers de clientes individuales
+    gameState.customers.forEach(customer => {
+        if (customer.patienceTimer) {
+            clearTimeout(customer.patienceTimer);
+        }
+    });
+    
+    // Pausar timers de power-ups
+    Object.keys(gameState.activePowerUps).forEach(powerUpType => {
+        const powerUp = gameState.activePowerUps[powerUpType];
+        if (powerUp.timer) {
+            clearTimeout(powerUp.timer);
+        }
+    });
+}
+
+// Reanudar todos los timers del juego
+function resumeAllGameTimers() {
+    // Reanudar spawn de clientes y power-ups
+    scheduleCustomerSpawn();
+    schedulePowerUpSpawn();
+    
+    // Reanudar timers de clientes (recalculando tiempo restante)
+    gameState.customers.forEach(customer => {
+        if (customer.patience > 0) {
+            const remainingTime = (customer.patience / customer.maxPatience) * customer.originalTimeout;
+            customer.patienceTimer = setTimeout(() => {
+                removeCustomer(customer);
+            }, remainingTime);
+        }
+    });
+    
+    // Reanudar power-ups activos
+    Object.keys(gameState.activePowerUps).forEach(powerUpType => {
+        const powerUp = gameState.activePowerUps[powerUpType];
+        if (powerUp.duration > 0) {
+            powerUp.timer = setTimeout(() => {
+                deactivatePowerUp(powerUpType);
+            }, powerUp.duration);
+        }
+    });
+}
