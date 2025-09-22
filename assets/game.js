@@ -329,15 +329,15 @@ function mostrarFraseAleatoria() {
     
     const ahora = Date.now();
     
-    // Solo mostrar una frase cada 8-15 segundos
-    if (ahora - ultimaFrase < 8000) return;
+    // Solo mostrar una frase cada 4-8 segundos
+    if (ahora - ultimaFrase < 4000) return;
     
     // Elegir tipo de frase con sistema de pesos
     const tiposFrase = [
-        { tipo: 'empleado', frases: frasesEmpleado, peso: 25 },
-        { tipo: 'cliente', frases: frasesClientes, peso: 30 },
-        { tipo: 'chisme', frases: chismesBarrio, peso: 25 },
-        { tipo: 'curiosidad', frases: curiosidades90s, peso: 20 }
+        { tipo: 'empleado', frases: frasesEmpleado, peso: 20 },
+        { tipo: 'cliente', frases: frasesClientes, peso: 25 },
+        { tipo: 'chisme', frases: chismesBarrio, peso: 30 },
+        { tipo: 'curiosidad', frases: curiosidades90s, peso: 25 }
     ];
     
     // Sistema de pesos: crear array expandido según peso
@@ -363,8 +363,8 @@ function mostrarFraseAleatoria() {
     mostrarFraseEnVideoclub(fraseElegida, categoriaElegida.tipo);
     ultimaFrase = ahora;
     
-    // Programar la siguiente frase (8-15 segundos)
-    const siguienteFrase = 8000 + Math.random() * 7000;
+    // Programar la siguiente frase (4-8 segundos)
+    const siguienteFrase = 4000 + Math.random() * 4000;
     fraseTimer = setTimeout(mostrarFraseAleatoria, siguienteFrase);
 }
 
@@ -521,8 +521,8 @@ function iniciarSistemaFrases() {
         clearTimeout(fraseTimer);
     }
     
-    // Comenzar después de 5 segundos del inicio del juego
-    fraseTimer = setTimeout(mostrarFraseAleatoria, 5000);
+    // Comenzar después de 3 segundos del inicio del juego
+    fraseTimer = setTimeout(mostrarFraseAleatoria, 3000);
 }
 
 // Función para detener el sistema de frases
