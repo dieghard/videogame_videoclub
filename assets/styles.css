@@ -2815,6 +2815,53 @@ body {
         height: -webkit-fill-available;
         height: -webkit-fill-available;
         height: 100vh; /* Fix para Safari iOS */
+        padding-bottom: env(safe-area-inset-bottom, 20px); /* Respeta el área segura */
+    }
+    
+    /* FIX CRÍTICO PARA IPHONE - VIDEOCLUB VISIBLE */
+    .videoclub {
+        position: fixed !important; /* Fixed en lugar de absolute */
+        bottom: env(safe-area-inset-bottom, 10px) !important; /* Respeta notch */
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 90% !important;
+        max-width: 400px !important;
+        height: auto !important;
+        min-height: 80px !important;
+        padding: 15px 10px !important;
+        z-index: 9999 !important; /* Siempre encima */
+        background: linear-gradient(135deg, #2d1b69, #4c1d95) !important;
+        border: 2px solid #8b5cf6 !important;
+        border-radius: 15px !important;
+        box-shadow: 0 -5px 20px rgba(139, 92, 246, 0.5) !important;
+    }
+    
+    .item-slot {
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 30px !important;
+        border: 2px solid #00ffff !important;
+        border-radius: 10px !important;
+        background: rgba(0, 255, 255, 0.1) !important;
+        touch-action: manipulation !important; /* Mejora respuesta táctil */
+        -webkit-tap-highlight-color: transparent !important;
+        transition: all 0.2s ease !important;
+        cursor: pointer !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        margin: 0 5px !important;
+    }
+    
+    .item-slot:active {
+        background: rgba(0, 255, 255, 0.3) !important;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.5) !important;
+        transform: scale(0.95) !important;
+    }
+    
+    .item-slot.selected {
+        border-color: #ff00ff !important;
+        background: rgba(255, 0, 255, 0.3) !important;
+        box-shadow: 0 0 20px rgba(255, 0, 255, 0.8) !important;
     }
     
     .menu-screen {
@@ -2859,12 +2906,6 @@ body {
         margin-bottom: 2px;
     }
     
-    .item-slot {
-        width: 50px !important;
-        height: 50px !important;
-        font-size: 24px !important;
-    }
-    
     .power-up {
         width: 40px !important;
         height: 40px !important;
@@ -2883,6 +2924,13 @@ body {
         max-width: 300px !important;
         line-height: 1.4 !important;
     }
+    
+    /* Chat ajustado para dejar espacio al videoclub */
+    .chat-container {
+        bottom: 120px !important; /* Más espacio arriba del videoclub */
+        height: 20% !important;
+        max-height: 150px !important;
+    }
 }
 
 /* Fix para dispositivos con notch (iPhone X y posteriores) */
@@ -2899,6 +2947,79 @@ body {
     .menu-screen {
         padding-top: max(20px, env(safe-area-inset-top));
         padding-bottom: max(20px, env(safe-area-inset-bottom));
+    }
+    
+    /* VIDEOCLUB ESPECÍFICO PARA IPHONES CON NOTCH */
+    .videoclub {
+        bottom: max(10px, env(safe-area-inset-bottom)) !important;
+        position: fixed !important;
+        z-index: 10000 !important;
+    }
+}
+
+/* Fix específico para todos los iPhones (iOS Safari) */
+@supports (-webkit-touch-callout: none) {
+    .videoclub {
+        position: fixed !important;
+        bottom: max(10px, env(safe-area-inset-bottom, 10px)) !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: 90% !important;
+        max-width: 400px !important;
+        height: auto !important;
+        min-height: 80px !important;
+        padding: 15px 10px !important;
+        z-index: 9999 !important;
+        background: linear-gradient(135deg, #2d1b69, #4c1d95) !important;
+        border: 2px solid #8b5cf6 !important;
+        border-radius: 15px !important;
+        box-shadow: 0 -5px 20px rgba(139, 92, 246, 0.5) !important;
+        display: flex !important;
+        justify-content: space-around !important;
+        align-items: center !important;
+    }
+    
+    .item-slot {
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: transparent !important;
+        -webkit-user-select: none !important;
+        user-select: none !important;
+        cursor: pointer !important;
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 30px !important;
+        border: 2px solid #00ffff !important;
+        border-radius: 10px !important;
+        background: rgba(0, 255, 255, 0.1) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 5px !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    .item-slot:active {
+        background: rgba(0, 255, 255, 0.3) !important;
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.5) !important;
+        transform: scale(0.95) !important;
+    }
+    
+    .item-slot.selected {
+        border-color: #ff00ff !important;
+        background: rgba(255, 0, 255, 0.3) !important;
+        box-shadow: 0 0 20px rgba(255, 0, 255, 0.8) !important;
+    }
+    
+    /* Ajustar chat para dejar espacio */
+    .chat-container {
+        bottom: 120px !important;
+        height: 25% !important;
+        max-height: 180px !important;
+    }
+    
+    /* Asegurar que el área de juego no interfiera */
+    .game-area {
+        padding-bottom: 120px !important;
     }
 }
 
@@ -2965,5 +3086,81 @@ body {
     
     .chat-text {
         font-size: 16px !important;
+    }
+}
+
+/* ========== FIX ESPECÍFICO PARA IPHONE ========== */
+/* Detección de iPhone por User Agent y viewport */
+@media only screen 
+  and (min-device-width: 375px) 
+  and (max-device-width: 428px) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+    
+    /* Fuerza la visibilidad del videoclub */
+    #videoclubSlots {
+        position: fixed !important;
+        bottom: 20px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        width: calc(100vw - 40px) !important;
+        max-width: 380px !important;
+        height: 80px !important;
+        padding: 15px !important;
+        z-index: 99999 !important;
+        background: linear-gradient(135deg, #2d1b69, #4c1d95) !important;
+        border: 3px solid #8b5cf6 !important;
+        border-radius: 15px !important;
+        display: flex !important;
+        justify-content: space-evenly !important;
+        align-items: center !important;
+        box-shadow: 0 -10px 30px rgba(139, 92, 246, 0.5) !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* Iconos del videoclub más grandes y clickeables */
+    #videoclubSlots .item-slot {
+        width: 70px !important;
+        height: 70px !important;
+        font-size: 35px !important;
+        border: 2px solid #00ffff !important;
+        border-radius: 12px !important;
+        background: rgba(0, 255, 255, 0.1) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: transparent !important;
+        -webkit-user-select: none !important;
+        user-select: none !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+        margin: 0 !important;
+    }
+    
+    /* Estados activos más visibles */
+    #videoclubSlots .item-slot:active,
+    #videoclubSlots .item-slot:focus {
+        background: rgba(0, 255, 255, 0.4) !important;
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.7) !important;
+        transform: scale(0.9) !important;
+        border-color: #ff00ff !important;
+    }
+    
+    #videoclubSlots .item-slot.selected {
+        border-color: #ff00ff !important;
+        background: rgba(255, 0, 255, 0.3) !important;
+        box-shadow: 0 0 25px rgba(255, 0, 255, 0.8) !important;
+    }
+    
+    /* Ajustar otros elementos para dar espacio */
+    .chat-container {
+        bottom: 130px !important;
+        height: 20% !important;
+        max-height: 160px !important;
+    }
+    
+    .game-area {
+        padding-bottom: 130px !important;
     }
 }
