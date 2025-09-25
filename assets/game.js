@@ -2,16 +2,15 @@
 let gameState = {
     isPlaying: false,
     score: 0,
-    lives: 3,
+    // lives: 3, // Removido en modo nostálgico - juego infinito
     year: 1987,
-    combo: 1,
     selectedItem: null,
     customers: [],
     powerUps: [],
     currentYear: 1987,
     customersServed: 0,
     difficulty: 1,
-    comboCount: 0,
+
     activePowerUps: {},
     highScore: localStorage.getItem('retroVideoClubHighScore') || 0
 };
@@ -78,12 +77,12 @@ const products80s = {
     ]
 };
 
-// Configuración del juego
+// Configuración del juego (modo nostálgico relajado)
 const gameConfig = {
-    customerSpawnRate: 3000,
-    customerPatience: 8000,
-    maxCustomers: 3,
-    powerUpSpawnRate: 15000,
+    customerSpawnRate: 12000,       // Más pausado: 12 segundos entre clientes para leer mejor
+    customerPatience: 16000,        // Duplicada: 16 segundos de paciencia
+    maxCustomers: 2,                // Solo 2 clientes máximo para menos presión
+    powerUpSpawnRate: 10000,        // Más power-ups: cada 10 segundos
     yearEvents: [
         // 1987
         [
@@ -246,78 +245,7 @@ const powerUpTypes = {
 };
 
 // ========== SISTEMA DE FRASES NOSTÁLGICAS Y CHISMES ==========
-
-// Frases del EMPLEADO del videoclub (profesionales, informativas)
-const frasesEmpleado = [
-    "👨‍💼 EMPLEADO: che te olvidaste de rebobinar la peli anterior",
-    "👨‍💼 EMPLEADO: las multas por no rebobinar son caras eh!",
-    "👨‍💼 EMPLEADO: acordate que Volver al Futuro 2 sale la semana que viene",
-    "👨‍💼 EMPLEADO: los VHS originales cuestan $50, los truchos $20",
-    "👨‍💼 EMPLEADO: cuidado con las cintas que se cortan",
-    "👨‍💼 EMPLEADO: el lunes traemos más copias de Dirty Dancing",
-    "👨‍💼 EMPLEADO: no olvides devolver la cinta en 3 días",
-    "👨‍💼 EMPLEADO: tenemos descuento por 3 películas",
-    "👨‍💼 EMPLEADO: esta semana llegan los estrenos de Hollywood",
-    "👨‍💼 EMPLEADO: si querés reservar algo, avisame",
-    "👨‍💼 EMPLEADO: ¿querés un cafecito mientras elegís?",
-    "👨‍💼 EMPLEADO: preparé mate, ¿te sirvo?",
-    "👨‍💼 EMPLEADO: el café está recién hecho",
-    "👨‍💼 EMPLEADO: este mate está bárbaro, probalo"
-];
-
-// Frases de CLIENTES que entran (comentarios casuales, chismes)
-const frasesClientes = [
-    "👥 CLIENTE: ¿ya viste Top Gun? está buenísima",
-    "👥 CLIENTE: dicen que Madonna va a venir a Argentina",
-    "👥 CLIENTE: mi hermano dice que Maradona alquila pelis acá cerca",
-    "👥 CLIENTE: en el Blockbuster de Palermo están más caras",
-    "👥 CLIENTE: ¿sabés si llega pronto la nueva de Tom Cruise?",
-    "👥 CLIENTE: mi vieja dice que antes las pelis duraban más",
-    "👥 CLIENTE: ¿viste que pusieron otro videoclub en la esquina?",
-    "👥 CLIENTE: dicen que van a cerrar el cine del barrio",
-    "👥 CLIENTE: mi primo labura en un videoclub de Flores",
-    "👥 CLIENTE: ¿viste que ahora alquilan también Nintendo?"
-];
-
-// CHISMES DE BARRIO (lo que se comenta en el barrio)
-const chismesBarrio = [
-    "🏘️ CHISME: che viste que a {cliente} le compraron una Family Game?",
-    "🏘️ CHISME: che viste que {cliente} se fue de vacaciones a Miami?",
-    "🏘️ CHISME: che viste que {cliente} se compró zapatillas importadas?",
-    "🏘️ CHISME: che viste que a {cliente} la vieron en el cumple de Xuxa?",
-    "🏘️ CHISME: che viste que {cliente} tiene todos los cassettes de Madonna?",
-    "🏘️ CHISME: che viste que {cliente} se anotó en Video Match?",
-    "🏘️ CHISME: che viste que a {cliente} le tocó el 1 a 1?",
-    "🏘️ CHISME: che viste que {cliente} tiene una bicicleta BMX como la de E.T.?",
-    "🏘️ CHISME: che viste que a {cliente} la llevaron al Luna Park?",
-    "🏘️ CHISME: che viste que {cliente} se compró un auto 0km?",
-    "🏘️ CHISME: che viste que a {cliente} le instalaron cable y tiene MTV?",
-    "🏘️ CHISME: che viste que {cliente} colecciona cassettes de los Fabulosos?",
-    "🏘️ CHISME: che viste que a {cliente} la invitaron al programa de Mirtha?",
-    "🏘️ CHISME: che viste que {cliente} se fue a Punta del Este?"
-];
-
-// CURIOSIDADES DE LOS 90 (datos culturales/históricos)
-const curiosidades90s = [
-    "📰 CURIOSIDAD: sabías que Menem decía que íbamos a ser como Japón?",
-    "📰 CURIOSIDAD: sabías que las zapatillas importadas costaban una fortuna?",
-    "📰 CURIOSIDAD: sabías que Xuxa era más famosa que el presidente?",
-    "📰 CURIOSIDAD: sabías que los chicles Bazooka venían con figuritas?",
-    "📰 CURIOSIDAD: sabías que las hamburguesas de McDonald's costaban $2?",
-    "📰 CURIOSIDAD: sabías que el peso valía lo mismo que el dólar?",
-    "📰 CURIOSIDAD: sabías que Tinelli empezó en la radio con Pergolini?",
-    "📰 CURIOSIDAD: sabías que los videojuegos de Family costaban $80?",
-    "📰 CURIOSIDAD: sabías que comprarse una Nintendo era el sueño del pibe?",
-    "📰 CURIOSIDAD: sabías que los cassettes se grababan de la radio?",
-    "📰 CURIOSIDAD: sabías que Video Match era lo más visto de la tele?",
-    "📰 CURIOSIDAD: sabías que las máquinas del millón estaban en todos lados?",
-    "📰 CURIOSIDAD: sabías que Mafalda seguía siendo más popular que Batman?",
-    "📰 CURIOSIDAD: sabías que los locutorios eran el único lugar para llamar?",
-    "📰 CURIOSIDAD: sabías que las revistas Billiken las leía todo el mundo?",
-    "📰 CURIOSIDAD: sabías que los helados Frigor eran furor?",
-    "📰 CURIOSIDAD: sabías que tener cable era de millonario?",
-    "📰 CURIOSIDAD: sabías que los Redondos llenaban Obras sin radio?"
-];
+// Las frases están definidas en assets/frases-nostalgicas.js
 
 // Variable para controlar el sistema de frases
 let fraseTimer = null;
@@ -329,8 +257,8 @@ function mostrarFraseAleatoria() {
     
     const ahora = Date.now();
     
-    // Solo mostrar una frase cada 4-8 segundos
-    if (ahora - ultimaFrase < 4000) return;
+    // Solo mostrar una frase cada 6-10 segundos
+    if (ahora - ultimaFrase < 6000) return;
     
     // Elegir tipo de frase con sistema de pesos
     const tiposFrase = [
@@ -363,8 +291,8 @@ function mostrarFraseAleatoria() {
     mostrarFraseEnVideoclub(fraseElegida, categoriaElegida.tipo);
     ultimaFrase = ahora;
     
-    // Programar la siguiente frase (4-8 segundos)
-    const siguienteFrase = 4000 + Math.random() * 4000;
+    // Programar la siguiente frase (6-10 segundos)
+    const siguienteFrase = 6000 + Math.random() * 4000;
     fraseTimer = setTimeout(mostrarFraseAleatoria, siguienteFrase);
 }
 
@@ -378,18 +306,18 @@ function mostrarDialogoJuego(texto, tipo = 'empleado') {
         return;
     }
     
-    // Limpiar mensajes muy antiguos (mantener máximo 4 mensajes)
+    // Limpiar mensajes muy antiguos (mantener máximo 50 mensajes para historial extendido)
     const mensajesExistentes = chatContainer.querySelectorAll('.chat-message');
-    if (mensajesExistentes.length >= 4) {
-        // Remover los mensajes más antiguos (que están arriba en el flexbox column-reverse)
-        const mensajesARemover = Array.from(mensajesExistentes).slice(4);
+    if (mensajesExistentes.length >= 50) {
+        // Remover los mensajes más antiguos (los primeros en el DOM con column normal)
+        const mensajesARemover = Array.from(mensajesExistentes).slice(0, mensajesExistentes.length - 50);
         mensajesARemover.forEach(mensaje => {
             mensaje.classList.add('removing');
             setTimeout(() => {
                 if (mensaje.parentNode) {
                     mensaje.parentNode.removeChild(mensaje);
                 }
-            }, 300);
+            }, 600); // Tiempo para la nueva animación más suave
         });
     }
     
@@ -430,20 +358,13 @@ function mostrarDialogoJuego(texto, tipo = 'empleado') {
         <div class="chat-text">${textoLimpio}</div>
     `;
     
-    // Agregar al contenedor (aparece abajo debido a column-reverse)
+    // Agregar al final del contenedor (aparece abajo con column normal)
     chatContainer.appendChild(chatMessage);
     
-    // Auto-eliminar después de 6 segundos
+    // Auto-scroll al final para mostrar el mensaje más nuevo
     setTimeout(() => {
-        if (chatMessage.parentNode) {
-            chatMessage.classList.add('removing');
-            setTimeout(() => {
-                if (chatMessage.parentNode) {
-                    chatMessage.parentNode.removeChild(chatMessage);
-                }
-            }, 300);
-        }
-    }, 6000);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }, 50);
     
     console.log('Mensaje agregado al chat:', chatMessage);
 }
@@ -494,24 +415,27 @@ function mostrarFraseEnVideoclub(texto, tipo = 'default') {
     // Agregar animación de entrada
     chatMessage.style.animation = 'chatSlideIn 0.3s ease-out';
     
-    // Agregar al contenedor de chat
+    // Agregar al final del contenedor de chat
     chatContainer.appendChild(chatMessage);
     
-    // Mantener máximo 6 mensajes en el chat
+    // Auto-scroll al final para mostrar el mensaje más nuevo
+    setTimeout(() => {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }, 50);
+    
+    // Mantener máximo 50 mensajes en el chat para historial extendido pero con límite
     const allMessages = chatContainer.querySelectorAll('.chat-message');
-    if (allMessages.length > 6) {
-        // Remover los mensajes más antiguos (los de arriba)
-        for (let i = 0; i < allMessages.length - 6; i++) {
-            chatContainer.removeChild(allMessages[i]);
+    if (allMessages.length > 50) {
+        // Remover los mensajes más antiguos (los primeros en el DOM) con animación suave
+        for (let i = 0; i < allMessages.length - 50; i++) {
+            allMessages[i].classList.add('removing');
+            setTimeout(() => {
+                if (allMessages[i].parentNode) {
+                    allMessages[i].remove();
+                }
+            }, 600); // Tiempo para la nueva animación más suave
         }
     }
-    
-    // Remover mensaje después de 8 segundos
-    setTimeout(() => {
-        if (chatMessage.parentNode) {
-            chatMessage.parentNode.removeChild(chatMessage);
-        }
-    }, 8000);
 }
 
 // Función para iniciar el sistema de frases
@@ -521,8 +445,8 @@ function iniciarSistemaFrases() {
         clearTimeout(fraseTimer);
     }
     
-    // Comenzar después de 3 segundos del inicio del juego
-    fraseTimer = setTimeout(mostrarFraseAleatoria, 3000);
+    // Comenzar después de 5 segundos del inicio del juego
+    fraseTimer = setTimeout(mostrarFraseAleatoria, 5000);
 }
 
 // Función para detener el sistema de frases
@@ -562,442 +486,7 @@ function limpiarChat() {
     }
 }
 
-// Sistema de Audio Web Audio API
-class ChiptuneAudio {
-    constructor() {
-        this.audioContext = null;
-        this.masterGain = null;
-        this.isPlaying = false;
-        this.wasPlaying = false; // Para manejar pausa
-        this.backgroundMusic = null;
-        this.backgroundTimeouts = []; // Array para gestionar timeouts
-        this.initAudio();
-    }
-    
-    async initAudio() {
-        try {
-            this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            this.masterGain = this.audioContext.createGain();
-            this.masterGain.connect(this.audioContext.destination);
-            this.masterGain.gain.setValueAtTime(0.3, this.audioContext.currentTime);
-            console.log('Audio system initialized');
-        } catch (error) {
-            console.warn('Web Audio API not supported:', error);
-        }
-    }
-    
-    async resumeAudio() {
-        if (this.audioContext && this.audioContext.state === 'suspended') {
-            await this.audioContext.resume();
-        }
-    }
-    
-    createOscillator(frequency, type = 'square', duration = 0.2) {
-        if (!this.audioContext) return null;
-        
-        const oscillator = this.audioContext.createOscillator();
-        const gainNode = this.audioContext.createGain();
-        
-        oscillator.type = type;
-        oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(this.masterGain);
-        
-        const now = this.audioContext.currentTime;
-        gainNode.gain.setValueAtTime(0, now);
-        gainNode.gain.linearRampToValueAtTime(0.1, now + 0.01);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
-        
-        oscillator.start(now);
-        oscillator.stop(now + duration);
-        
-        return oscillator;
-    }
-    
-    playCorrectSound() {
-        if (!audioEnabled) return;
-        this.resumeAudio();
-        // Sonido de acierto: acorde mayor ascendente
-        const frequencies = [523.25, 659.25, 783.99]; // C5, E5, G5
-        frequencies.forEach((freq, index) => {
-            setTimeout(() => {
-                this.createOscillator(freq, 'square', 0.15);
-            }, index * 50);
-        });
-    }
-    
-    playWrongSound() {
-        if (!audioEnabled) return;
-        this.resumeAudio();
-        // Sonido de error: acorde disonante descendente
-        const frequencies = [349.23, 293.66, 246.94]; // F4, D4, B3
-        frequencies.forEach((freq, index) => {
-            setTimeout(() => {
-                this.createOscillator(freq, 'sawtooth', 0.3);
-            }, index * 100);
-        });
-    }
-    
-    playPowerUpSound() {
-        if (!audioEnabled) return;
-        this.resumeAudio();
-        // Sonido de power-up: escala ascendente rápida
-        const frequencies = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99, 1046.50];
-        frequencies.forEach((freq, index) => {
-            setTimeout(() => {
-                this.createOscillator(freq, 'triangle', 0.1);
-            }, index * 30);
-        });
-    }
-    
-    playAngrySound() {
-        if (!audioEnabled) return;
-        this.resumeAudio();
-        // Sonido de cliente enojado: ruido descendente
-        for (let i = 0; i < 5; i++) {
-            setTimeout(() => {
-                this.createOscillator(200 - i * 20, 'sawtooth', 0.2);
-            }, i * 50);
-        }
-    }
-    
-    playComboSound() {
-        if (!audioEnabled) return;
-        this.resumeAudio();
-        // Sonido de combo: arpeggio rápido
-        const frequencies = [523.25, 659.25, 783.99, 1046.50];
-        frequencies.forEach((freq, index) => {
-            setTimeout(() => {
-                this.createOscillator(freq, 'triangle', 0.12);
-            }, index * 40);
-        });
-    }
-    
-    startBackgroundMusic() {
-        if (!this.audioContext || this.isPlaying || !audioEnabled) return;
-        
-        this.isPlaying = true;
-        this.currentMelodyIndex = 0;
-        this.playBackgroundLoop();
-    }
-    
-    stopBackgroundMusic() {
-        this.isPlaying = false;
-        if (this.backgroundMusic) {
-            try {
-                this.backgroundMusic.stop();
-                this.backgroundMusic.disconnect();
-            } catch(e) {
-                // Ignorar errores si ya está desconectado
-            }
-            this.backgroundMusic = null;
-        }
-        // Limpiar todos los timeouts pendientes
-        this.backgroundTimeouts.forEach(timeout => clearTimeout(timeout));
-        this.backgroundTimeouts = [];
-    }
-    
-    pauseBackgroundMusic() {
-        if (!this.isPlaying || !this.audioContext) return;
-        
-        this.wasPlaying = true;
-        this.isPlaying = false;
-        
-        if (this.backgroundMusic) {
-            try {
-                this.backgroundMusic.stop();
-                this.backgroundMusic.disconnect();
-            } catch(e) {
-                // Ignorar errores si ya está desconectado
-            }
-            this.backgroundMusic = null;
-        }
-        
-        // Pausar todos los timeouts pendientes
-        this.backgroundTimeouts.forEach(timeout => clearTimeout(timeout));
-        this.backgroundTimeouts = [];
-    }
-    
-    resumeBackgroundMusic() {
-        if (!this.wasPlaying || this.isPlaying || !this.audioContext || !audioEnabled) return;
-        
-        this.wasPlaying = false;
-        this.isPlaying = true;
-        this.playBackgroundLoop();
-    }
-    
-    // Melodías inspiradas en éxitos de los 80s
-    get80sMelodies() {
-        return [
-            // 1987 - Melodías del año
-            [
-                // "Take On Me" - A-ha
-                [
-                    {freq: 659.25, duration: 0.3}, {freq: 659.25, duration: 0.3},
-                    {freq: 698.46, duration: 0.3}, {freq: 698.46, duration: 0.3},
-                    {freq: 659.25, duration: 0.3}, {freq: 587.33, duration: 0.3},
-                    {freq: 523.25, duration: 0.6}, {freq: 0, duration: 0.3},
-                    {freq: 523.25, duration: 0.3}, {freq: 587.33, duration: 0.3},
-                    {freq: 659.25, duration: 0.6}, {freq: 587.33, duration: 0.6},
-                    {freq: 523.25, duration: 0.6}
-                ],
-                // "Living on a Prayer" - Bon Jovi
-                [
-                    {freq: 293.66, duration: 0.4}, {freq: 369.99, duration: 0.4},
-                    {freq: 440.00, duration: 0.4}, {freq: 369.99, duration: 0.4},
-                    {freq: 293.66, duration: 0.8}, {freq: 261.63, duration: 0.4},
-                    {freq: 293.66, duration: 0.4}, {freq: 369.99, duration: 0.8},
-                    {freq: 440.00, duration: 1.2}
-                ],
-                // "Here I Go Again" - Whitesnake
-                [
-                    {freq: 392.00, duration: 0.5}, {freq: 329.63, duration: 0.5},
-                    {freq: 261.63, duration: 0.5}, {freq: 329.63, duration: 0.5},
-                    {freq: 392.00, duration: 1.0}, {freq: 523.25, duration: 0.5},
-                    {freq: 440.00, duration: 0.5}, {freq: 392.00, duration: 1.0}
-                ]
-            ],
-            
-            // 1988 - Melodías del año
-            [
-                // "Sweet Dreams" - Eurythmics
-                [
-                    {freq: 293.66, duration: 0.4}, {freq: 329.63, duration: 0.4},
-                    {freq: 369.99, duration: 0.4}, {freq: 293.66, duration: 0.4},
-                    {freq: 329.63, duration: 0.4}, {freq: 369.99, duration: 0.4},
-                    {freq: 440.00, duration: 0.8}, {freq: 392.00, duration: 0.4},
-                    {freq: 369.99, duration: 0.4}, {freq: 329.63, duration: 0.8},
-                    {freq: 293.66, duration: 1.2}
-                ],
-                // "Sweet Child O' Mine" - Guns N' Roses
-                [
-                    {freq: 587.33, duration: 0.3}, {freq: 659.25, duration: 0.3},
-                    {freq: 587.33, duration: 0.3}, {freq: 523.25, duration: 0.3},
-                    {freq: 440.00, duration: 0.6}, {freq: 523.25, duration: 0.3},
-                    {freq: 587.33, duration: 0.6}, {freq: 659.25, duration: 0.9}
-                ],
-                // "Don't Worry Be Happy" - Bobby McFerrin
-                [
-                    {freq: 523.25, duration: 0.4}, {freq: 587.33, duration: 0.4},
-                    {freq: 523.25, duration: 0.4}, {freq: 440.00, duration: 0.4},
-                    {freq: 392.00, duration: 0.8}, {freq: 440.00, duration: 0.4},
-                    {freq: 523.25, duration: 1.2}
-                ]
-            ],
-            
-            // 1989 - Melodías del año
-            [
-                // "Blue Monday" - New Order
-                [
-                    {freq: 261.63, duration: 0.5}, {freq: 293.66, duration: 0.5},
-                    {freq: 329.63, duration: 0.5}, {freq: 293.66, duration: 0.5},
-                    {freq: 261.63, duration: 0.5}, {freq: 220.00, duration: 0.5},
-                    {freq: 246.94, duration: 0.5}, {freq: 261.63, duration: 0.5},
-                    {freq: 329.63, duration: 1.0}, {freq: 293.66, duration: 1.0}
-                ],
-                // "Like a Prayer" - Madonna
-                [
-                    {freq: 392.00, duration: 0.6}, {freq: 440.00, duration: 0.3},
-                    {freq: 493.88, duration: 0.6}, {freq: 440.00, duration: 0.3},
-                    {freq: 392.00, duration: 0.6}, {freq: 329.63, duration: 0.6},
-                    {freq: 392.00, duration: 1.2}
-                ],
-                // "Love Shack" - B-52's
-                [
-                    {freq: 329.63, duration: 0.4}, {freq: 369.99, duration: 0.4},
-                    {freq: 329.63, duration: 0.4}, {freq: 293.66, duration: 0.4},
-                    {freq: 329.63, duration: 0.8}, {freq: 440.00, duration: 0.8},
-                    {freq: 329.63, duration: 0.8}
-                ]
-            ],
-            
-            // 1990 - Melodías del año
-            [
-                // "Don't You Forget About Me" - Simple Minds
-                [
-                    {freq: 392.00, duration: 0.6}, {freq: 440.00, duration: 0.6},
-                    {freq: 493.88, duration: 0.6}, {freq: 523.25, duration: 0.6},
-                    {freq: 493.88, duration: 0.6}, {freq: 440.00, duration: 0.6},
-                    {freq: 392.00, duration: 1.2}, {freq: 329.63, duration: 0.6},
-                    {freq: 392.00, duration: 0.6}, {freq: 440.00, duration: 1.2}
-                ],
-                // "Vogue" - Madonna
-                [
-                    {freq: 523.25, duration: 0.4}, {freq: 523.25, duration: 0.4},
-                    {freq: 587.33, duration: 0.4}, {freq: 523.25, duration: 0.4},
-                    {freq: 440.00, duration: 0.8}, {freq: 523.25, duration: 0.8},
-                    {freq: 587.33, duration: 1.2}
-                ],
-                // "Nothing Compares 2 U" - Sinéad O'Connor
-                [
-                    {freq: 659.25, duration: 0.8}, {freq: 587.33, duration: 0.4},
-                    {freq: 523.25, duration: 0.8}, {freq: 587.33, duration: 0.4},
-                    {freq: 659.25, duration: 0.8}, {freq: 523.25, duration: 1.2}
-                ]
-            ],
-            
-            // 1991 - Melodías del año
-            [
-                // "Girls Just Want to Have Fun" - Cyndi Lauper
-                [
-                    {freq: 523.25, duration: 0.4}, {freq: 587.33, duration: 0.4},
-                    {freq: 659.25, duration: 0.4}, {freq: 698.46, duration: 0.4},
-                    {freq: 783.99, duration: 0.8}, {freq: 659.25, duration: 0.4},
-                    {freq: 587.33, duration: 0.4}, {freq: 523.25, duration: 0.8},
-                    {freq: 440.00, duration: 0.4}, {freq: 493.88, duration: 0.4},
-                    {freq: 523.25, duration: 1.2}
-                ],
-                // "Everything I Do" - Bryan Adams
-                [
-                    {freq: 440.00, duration: 0.8}, {freq: 493.88, duration: 0.4},
-                    {freq: 523.25, duration: 0.8}, {freq: 493.88, duration: 0.4},
-                    {freq: 440.00, duration: 1.2}, {freq: 392.00, duration: 0.8}
-                ],
-                // "Smells Like Teen Spirit" - Nirvana
-                [
-                    {freq: 329.63, duration: 0.4}, {freq: 329.63, duration: 0.4},
-                    {freq: 369.99, duration: 0.4}, {freq: 329.63, duration: 0.4},
-                    {freq: 293.66, duration: 0.8}, {freq: 329.63, duration: 0.8}
-                ]
-            ],
-            
-            // 1992 - Melodías del año
-            [
-                // "Time After Time" - Cyndi Lauper
-                [
-                    {freq: 659.25, duration: 0.8}, {freq: 587.33, duration: 0.4},
-                    {freq: 523.25, duration: 0.8}, {freq: 440.00, duration: 0.4},
-                    {freq: 493.88, duration: 0.8}, {freq: 523.25, duration: 0.8},
-                    {freq: 587.33, duration: 0.8}, {freq: 659.25, duration: 1.2},
-                    {freq: 523.25, duration: 1.2}
-                ],
-                // "I Will Always Love You" - Whitney Houston
-                [
-                    {freq: 523.25, duration: 1.0}, {freq: 587.33, duration: 0.5},
-                    {freq: 659.25, duration: 1.0}, {freq: 783.99, duration: 0.5},
-                    {freq: 659.25, duration: 1.0}, {freq: 523.25, duration: 1.5}
-                ],
-                // "November Rain" - Guns N' Roses
-                [
-                    {freq: 392.00, duration: 0.6}, {freq: 440.00, duration: 0.6},
-                    {freq: 523.25, duration: 0.6}, {freq: 587.33, duration: 0.6},
-                    {freq: 523.25, duration: 1.2}, {freq: 440.00, duration: 1.2}
-                ]
-            ]
-        ];
-    }
-    
-    getCurrentMelody() {
-        const melodiesByYear = this.get80sMelodies();
-        const year = gameState.currentYear;
-        const yearIndex = Math.max(0, Math.min(5, year - 1987)); // Clamp entre 0-5
-        
-        const melodiesForYear = melodiesByYear[yearIndex];
-        if (melodiesForYear && melodiesForYear.length > 0) {
-            // Seleccionar melodía aleatoria para el año
-            const randomIndex = Math.floor(Math.random() * melodiesForYear.length);
-            return melodiesForYear[randomIndex];
-        }
-        
-        // Fallback a la primera melodía del primer año
-        return melodiesByYear[0][0];
-    }
-    
-    playBackgroundLoop() {
-        if (!this.isPlaying || !this.audioContext) return;
-        
-        const melody = this.getCurrentMelody();
-        const baseVolume = 0.15; // Más suave para ambiente
-        
-        let totalDuration = 0;
-        melody.forEach((note, index) => {
-            const timeoutId = setTimeout(() => {
-                if (this.isPlaying) {
-                    if (note.freq > 0) {
-                        // Usar synth wave con filtros
-                        this.playSynthNote(note.freq, note.duration, baseVolume);
-                    }
-                    if (index === melody.length - 1) {
-                        // Añadir pausa entre repeticiones
-                        const loopTimeoutId = setTimeout(() => this.playBackgroundLoop(), (note.duration + 0.5) * 1000);
-                        this.backgroundTimeouts.push(loopTimeoutId);
-                    }
-                }
-            }, totalDuration * 1000);
-            this.backgroundTimeouts.push(timeoutId);
-            totalDuration += note.duration;
-        });
-    }
-    
-    playSynthNote(frequency, duration, volume = 0.15) {
-        if (!this.audioContext) return;
-        
-        // Crear oscilador principal (synth lead)
-        const mainOsc = this.audioContext.createOscillator();
-        const mainGain = this.audioContext.createGain();
-        
-        // Crear oscilador de armonía (octava baja)
-        const harmonyOsc = this.audioContext.createOscillator();
-        const harmonyGain = this.audioContext.createGain();
-        
-        // Filtro pasa-bajos para sonido synth
-        const filter = this.audioContext.createBiquadFilter();
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(2000, this.audioContext.currentTime);
-        filter.Q.setValueAtTime(1, this.audioContext.currentTime);
-        
-        // Configurar osciladores
-        mainOsc.type = 'sawtooth'; // Sonido synth característico
-        mainOsc.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
-        
-        harmonyOsc.type = 'triangle';
-        harmonyOsc.frequency.setValueAtTime(frequency / 2, this.audioContext.currentTime); // Octava baja
-        
-        // Conectar audio graph
-        mainOsc.connect(mainGain);
-        mainGain.connect(filter);
-        filter.connect(this.masterGain);
-        
-        harmonyOsc.connect(harmonyGain);
-        harmonyGain.connect(this.masterGain);
-        
-        // Configurar envolventes ADSR (Attack, Decay, Sustain, Release)
-        const now = this.audioContext.currentTime;
-        const attackTime = 0.05;
-        const decayTime = 0.1;
-        const sustainLevel = volume * 0.7;
-        const releaseTime = 0.2;
-        
-        // Envolvente principal
-        mainGain.gain.setValueAtTime(0, now);
-        mainGain.gain.linearRampToValueAtTime(volume, now + attackTime);
-        mainGain.gain.exponentialRampToValueAtTime(sustainLevel, now + attackTime + decayTime);
-        mainGain.gain.setValueAtTime(sustainLevel, now + duration - releaseTime);
-        mainGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-        
-        // Envolvente armonía (más suave)
-        harmonyGain.gain.setValueAtTime(0, now);
-        harmonyGain.gain.linearRampToValueAtTime(volume * 0.3, now + attackTime);
-        harmonyGain.gain.exponentialRampToValueAtTime(sustainLevel * 0.3, now + attackTime + decayTime);
-        harmonyGain.gain.setValueAtTime(sustainLevel * 0.3, now + duration - releaseTime);
-        harmonyGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-        
-        // Modular el filtro para efecto synth
-        filter.frequency.exponentialRampToValueAtTime(800, now + duration);
-        
-        mainOsc.start(now);
-        mainOsc.stop(now + duration);
-        harmonyOsc.start(now);
-        harmonyOsc.stop(now + duration);
-    }
-}
 
-// Instancia global del sistema de audio
-const audioSystem = new ChiptuneAudio();
-
-// Variables de estado del audio
-let audioEnabled = true;
 
 // Función para activar el audio automáticamente
 async function enableAudio() {
@@ -1083,6 +572,14 @@ function startGame() {
     // Limpiar el chat al iniciar nuevo juego
     limpiarChat();
     
+    // Asegurar que el scroll del chat esté al final para mostrar mensajes nuevos
+    setTimeout(() => {
+        const chatContainer = document.getElementById('chatContainer');
+        if (chatContainer) {
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    }, 100);
+    
     // Ocultar menú y mostrar elementos del juego
     document.getElementById('mainMenu').style.display = 'none';
     document.querySelector('.header').style.display = 'flex';
@@ -1092,15 +589,13 @@ function startGame() {
     // Resetear completamente el estado del juego
     gameState.isPlaying = true;
     gameState.score = 0;
-    gameState.lives = 3;
+    // gameState.lives = 3; // Removido en modo nostálgico
     gameState.year = 1987;
     gameState.currentYear = 1987; 
-    gameState.combo = 1;
     gameState.customersServed = 0;
     gameState.customers = [];
     gameState.powerUps = [];
     gameState.activePowerUps = {};
-    gameState.comboCount = 0;
     gameState.difficulty = 1;
     gameState.selectedItem = null;
     
@@ -1109,9 +604,8 @@ function startGame() {
     const existingCustomers = gameArea.querySelectorAll('.customer');
     const existingPowerUps = gameArea.querySelectorAll('.power-up');
     const existingParticles = gameArea.querySelectorAll('.particle');
-    const existingComboTexts = gameArea.querySelectorAll('.combo-text');
     
-    [...existingCustomers, ...existingPowerUps, ...existingParticles, ...existingComboTexts].forEach(element => {
+    [...existingCustomers, ...existingPowerUps, ...existingParticles].forEach(element => {
         if (element.parentNode) {
             element.parentNode.removeChild(element);
         }
@@ -1150,9 +644,8 @@ function gameLoop() {
 // Actualizar display
 function updateDisplay() {
     document.getElementById('score').textContent = gameState.score.toLocaleString();
-    document.getElementById('lives').textContent = '❤️'.repeat(gameState.lives);
+    // document.getElementById('lives').textContent = '❤️'.repeat(gameState.lives); // Removido en modo nostálgico
     document.getElementById('year').textContent = gameState.year;
-    document.getElementById('combo').textContent = `x${gameState.combo}`;
     
     // Actualizar display prominente del año
     const yearDisplay = document.getElementById('yearDisplay');
@@ -1183,6 +676,8 @@ function selectItem(itemType) {
     
     // Vibración táctil al hacer click
     triggerVibration([30]);
+    // Sonido de blip arcade al seleccionar
+    playSound('blip');
     
     // Deseleccionar todos los items
     document.querySelectorAll('.item-slot').forEach(slot => {
@@ -1197,14 +692,6 @@ function selectItem(itemType) {
     } else {
         gameState.selectedItem = itemType;
         document.querySelector(`[data-item="${itemType}"]`).classList.add('selected');
-        
-        // Mostrar frase del empleado
-        const itemNames = {
-            'vhs': 'VHS',
-            'vinyl': 'Vinilo', 
-            'cassette': 'Cassette'
-        };
-        mostrarDialogoJuego(`Hola, claro, tomá: ${itemNames[itemType]}`, 'empleado');
         
         // Vibración más fuerte para selección exitosa
         triggerVibration([50]);
@@ -1223,16 +710,9 @@ function serveCustomer() {
     
     if (isCorrect) {
         // Acierto
-        const points = 100 * gameState.combo * gameState.difficulty;
+        const points = 100 * gameState.difficulty;
         gameState.score += points;
-        gameState.comboCount++;
-        
-        if (gameState.comboCount % 3 === 0) {
-            gameState.combo = Math.min(gameState.combo + 1, 5);
-            showComboText(customer.element.offsetLeft, customer.element.offsetTop);
-            playSound('combo'); // Sonido especial para combos
-        }
-        
+               
         gameState.customersServed++;
         showScoreDisplay(`+${points}`, customer.element.offsetLeft, customer.element.offsetTop);
         createParticles(customer.element.offsetLeft + 50, customer.element.offsetTop + 60, '#00ff00');
@@ -1241,12 +721,14 @@ function serveCustomer() {
         if (gameState.activePowerUps.doublePoints) {
             gameState.score += points;
             showScoreDisplay(`BONUS +${points}`, customer.element.offsetLeft, customer.element.offsetTop - 40);
+            playSound('coin'); // Sonido de moneda para bonus
         }
         
-        // Sonido de acierto
+        // Sonidos de acierto + arcade
         playSound('correct');
+        playSound('coin'); // Sonido de moneda al obtener puntos
         
-        // Mostrar frase de confirmación
+        // Mostrar frase de confirmación del empleado
         const itemNames = {
             'vhs': 'VHS',
             'vinyl': 'Vinilo', 
@@ -1258,21 +740,19 @@ function serveCustomer() {
         triggerVibration([60, 30, 60]);
         
     } else {
-        // Error
-        gameState.lives--;
-        gameState.combo = 1;
-        gameState.comboCount = 0;
+        // Error - sin penalización, solo feedback nostálgico
         // Mostrar mensaje centrado en la pantalla
         const gameArea = document.getElementById('gameArea');
         const centerX = gameArea.offsetWidth / 2;
         const centerY = gameArea.offsetHeight / 2;
-        showScoreDisplay('¡ERROR!', centerX, centerY);
-        createParticles(customer.element.offsetLeft + 50, customer.element.offsetTop + 60, '#ff0000');
+        showScoreDisplay('¡Ups! No era eso', centerX, centerY);
+        createParticles(customer.element.offsetLeft + 50, customer.element.offsetTop + 60, '#ffff00');
         
-        // Sonido de error
+        // Sonido más suave
         playSound('wrong');
         
-        // Mostrar frase de error
+        // Mostrar frase nostálgica de error
+        mostrarDialogoJuego('No te preocupes, en los 80s también nos equivocábamos', 'empleado');
         mostrarDialogoJuego('¡Ups! Eso no era lo que pedí...', 'cliente');
         
         // Vibración de error (más intensa)
@@ -1407,17 +887,33 @@ function updateCustomers() {
         const patienceBar = customer.element.querySelector('.patience-fill');
         patienceBar.style.width = Math.max(0, patiencePercent) + '%';
         
-        // Cliente se va si se acaba la paciencia
+        // Cliente se va - experiencia nostálgica sin penalización
         if (customer.patience <= 0) {
-            gameState.lives--;
-            gameState.combo = 1;
-            gameState.comboCount = 0;
-            // Mostrar mensaje centrado en la pantalla
+         
+            // Mostrar mensaje nostálgico
             const gameArea = document.getElementById('gameArea');
             const centerX = gameArea.offsetWidth / 2;
             const centerY = gameArea.offsetHeight / 2;
-            showScoreDisplay('¡SE FUE!', centerX, centerY);
-            playSound('angry');
+            const mensajesNostalgicos = [
+                'Se fue al Blockbuster',
+                'Volverá otro día',
+                'Los 80s eran así',
+                'Típico de la época'
+            ];
+            const mensajeAleatorio = mensajesNostalgicos[Math.floor(Math.random() * mensajesNostalgicos.length)];
+            showScoreDisplay(mensajeAleatorio, centerX, centerY);
+            
+            // Mostrar chisme sobre el cliente que se va
+            const chismesCliente = [
+                'Ese cliente siempre tiene prisa, debe ser contador',
+                'Seguro se va a alquilar Flashdance en otro lado',
+                'Los jóvenes de hoy no tienen paciencia como antes',
+                'Ese iba seguido al cine Rex los domingos'
+            ];
+            const chismeAleatorio = chismesCliente[Math.floor(Math.random() * chismesCliente.length)];
+            setTimeout(() => {
+                mostrarDialogoJuego(chismeAleatorio, 'chisme');
+            }, 1000);
             
             // Vibración cuando el cliente se va (patrón de frustración)
             triggerVibration([150, 75, 150]);
@@ -1608,14 +1104,14 @@ function updatePowerUps() {
 
 // Verificar transición de año
 function checkYearTransition() {
-    // Avanzar año cada 15 clientes servidos, máximo hasta 1992
-    const clientesParaAvance = 15;
+    // Avanzar año cada 10 clientes servidos (más rápido), máximo hasta 1992
+    const clientesParaAvance = 10;
     const añoObjetivo = 1987 + Math.floor(gameState.customersServed / clientesParaAvance);
     
     if (gameState.year < añoObjetivo && gameState.year < 1992) {
         gameState.year++;
         gameState.currentYear = gameState.year; // Actualizar currentYear para la música
-        gameState.difficulty += 0.1; // Incremento más suave de dificultad
+        // Sin incremento de dificultad - experiencia relajada
         
         // Cambiar música si es necesario
         if (audioEnabled && audioSystem.isPlaying) {
@@ -1660,11 +1156,11 @@ function showYearTransition() {
     updateDisplay();
 }
 
-// Verificar game over
+// Verificar game over (deshabilitado en modo nostálgico)
 function checkGameOver() {
-    if (gameState.lives <= 0) {
-        gameOver();
-    }
+    // El juego nunca termina en modo nostálgico
+    // Solo se disfruta la experiencia de los 80s
+    return;
 }
 
 // Game over
@@ -1707,7 +1203,7 @@ function gameOver() {
     // Limpiar elementos residuales del DOM
     const gameArea = document.getElementById('gameArea');
     if (gameArea) {
-        const residualElements = gameArea.querySelectorAll('.customer, .power-up, .particle, .combo-text');
+        const residualElements = gameArea.querySelectorAll('.customer, .power-up, .particle ');
         residualElements.forEach(element => {
             if (element.parentNode) {
                 element.parentNode.removeChild(element);
@@ -1798,28 +1294,6 @@ function showScoreDisplay(text, x, y) {
     };
 }
 
-// Mostrar texto de combo
-function showComboText(x, y) {
-    const comboDiv = document.createElement('div');
-    comboDiv.className = 'combo-text';
-    comboDiv.textContent = `COMBO x${gameState.combo}!`;
-    comboDiv.style.left = x + 'px';
-    comboDiv.style.top = (y - 30) + 'px';
-    
-    document.getElementById('gameArea').appendChild(comboDiv);
-    
-    comboDiv.animate([
-        { opacity: 1, transform: 'scale(1)' },
-        { opacity: 0, transform: 'scale(1.5)' }
-    ], {
-        duration: 1000,
-        easing: 'ease-out'
-    }).onfinish = () => {
-        if (comboDiv.parentNode) {
-            comboDiv.parentNode.removeChild(comboDiv);
-        }
-    };
-}
 
 // Crear partículas
 function createParticles(x, y, color) {
@@ -1851,7 +1325,7 @@ function createParticles(x, y, color) {
     }
 }
 
-// Reproducir sonido (implementación mejorada)
+// Reproducir sonido (implementación mejorada con sonidos de arcade)
 function playSound(type) {
     if (!audioEnabled || !audioSystem.audioContext) {
         console.log(`Audio not enabled. Would play sound: ${type}`);
@@ -1871,8 +1345,12 @@ function playSound(type) {
         case 'angry':
             audioSystem.playAngrySound();
             break;
-        case 'combo':
-            audioSystem.playComboSound();
+     
+        case 'coin':
+            audioSystem.playArcadeCoin(); // Sonido de moneda al obtener puntos
+            break;
+        case 'blip':
+            audioSystem.playArcadeBlip(); // Blip para interacciones
             break;
         default:
             console.log(`Playing sound: ${type}`);
@@ -1909,7 +1387,7 @@ function showInstructions() {
     } else {
         console.error('Modal instructionsModal not found');
         // Fallback al alert si no se encuentra el modal
-        alert(`📖 INSTRUCCIONES - VIDEOCLUB SANDY 📖\n\n🔊 IMPORTANTE: Activa el audio primero para disfrutar de la música y efectos.\n\n🎯 OBJETIVO:\nAtiende a los clientes del videoclub antes de que se impacienten.\n\n🎮 CÓMO JUGAR:\n• Los clientes llegan pidiendo VHS 🎥, vinilos 💿 o cassettes 📼\n• Haz clic en el ítem correcto para servirlos\n• ¡No los hagas esperar mucho!\n\n⚡ POWER-UPS:\n🎧 Walkman - Ralentiza el tiempo\n🌟 Madonna - Clientes contentos\n🕹️ Nintendo - Puntos dobles\n\n🏆 COMBOS:\nSirve 3 clientes seguidos sin fallar para aumentar tu multiplicador.\n\n📅 PROGRESIÓN:\nCada 15 clientes avanzas un año y aumenta la dificultad.`);
+        alert(`📖 INSTRUCCIONES - VIDEOCLUB SANDY 📖\n\n🔊 IMPORTANTE: Activa el audio primero para disfrutar de la música y efectos.\n\n🎯 OBJETIVO:\nAtiende a los clientes del videoclub antes de que se impacienten.\n\n🎮 CÓMO JUGAR:\n• Los clientes llegan pidiendo VHS 🎥, vinilos 💿 o cassettes 📼\n• Haz clic en el ítem correcto para servirlos\n• ¡No los hagas esperar mucho!\n\n⚡ POWER-UPS:\n🎧 Walkman - Ralentiza el tiempo\n🌟 Madonna - Clientes contentos\n🕹️ Nintendo - Puntos dobles\n\n🏆 📅 PROGRESIÓN:\nCada 10 clientes avanzas un año y aumenta la dificultad.`);
     }
 }
 
@@ -2041,17 +1519,6 @@ document.addEventListener('touchend', (e) => {
         }
     }
 });
-
-// Agregar efecto de screen shake cuando se pierde una vida
-const originalServeCustomer = serveCustomer;
-window.serveCustomer = function() {
-    const beforeLives = gameState.lives;
-    originalServeCustomer();
-    
-    if (gameState.lives < beforeLives) {
-        screenShake(8, 300);
-    }
-};
 
 // Modal CRT para Game Over
 function showCRTModal(message) {
@@ -2488,9 +1955,8 @@ function exitToMenu() {
 // Actualizar estadísticas en modal de pausa
 function updatePauseStats() {
     document.getElementById('pauseScore').textContent = gameState.score;
-    document.getElementById('pauseLives').textContent = '❤️'.repeat(gameState.lives);
+    // document.getElementById('pauseLives').textContent = '❤️'.repeat(gameState.lives); // Removido en modo nostálgico
     document.getElementById('pauseYear').textContent = gameState.year;
-    document.getElementById('pauseCombo').textContent = 'x' + gameState.combo;
 }
 
 // Pausar todos los timers del juego

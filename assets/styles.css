@@ -176,6 +176,10 @@ body {
     background-image: url('images/takeonme.jpg');
 }
 
+.movie-poster[data-image="historiasinfin.jpg"] {
+    background-image: url('images/historiasinfin.jpg');
+}
+
 .poster-label {
     position: absolute;
     bottom: -5px;
@@ -196,7 +200,7 @@ body {
 /* Display del año en TV de tubos CRT */
 .year-display {
     position: absolute;
-    top: 30px;
+    top: 0px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -511,39 +515,46 @@ body {
 /* ========== CONTENEDOR DE CHAT ========== */
 .chat-container {
     position: absolute;
-    bottom: 30%; /* Justo arriba del videoclub */
+    bottom: 25%; /* Mejor posicionamiento para desktop y móvil */
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
-    max-width: 600px;
-    height: 35%;
+    max-width: 650px; /* Ligeramente más ancho */
+    height: 40%; /* Un poco más alto para mejor visibilidad */
     display: flex;
-    flex-direction: column-reverse; /* Los nuevos elementos aparecen abajo */
+    flex-direction: column; /* Orden normal: viejos arriba, nuevos abajo */
     justify-content: flex-start;
     align-items: center;
-    overflow: hidden;
-    z-index: 100;
-    pointer-events: none;
+    overflow-y: auto; /* Permitir scroll vertical */
+    overflow-x: hidden;
+    z-index: 150; /* Aumentar z-index para estar arriba de todo */
+    pointer-events: auto; /* Permitir interacción para scroll */
     gap: 8px;
     padding: 10px;
+    /* Estilo de scrollbar personalizado */
+    scrollbar-width: thin;
+    scrollbar-color: #ff00ff #000;
 }
 
 .chat-message {
-    background: rgba(0, 0, 0, 0.95);
-    border: 2px solid #ffffff;
+    background: rgba(0, 20, 40, 0.95); /* Fondo azul oscuro más sólido */
+    border: 2px solid #00ffff; /* Border cian más visible */
     border-radius: 12px;
-    padding: 12px 16px;
-    margin: 0;
-    max-width: 100%;
-    min-width: 280px;
+    padding: 14px 18px; /* Más padding */
+    margin: 4px 0; /* Margen vertical para separación */
+    max-width: 480px; /* Ligeramente más ancho */
+    min-width: 320px; /* Más ancho mínimo */
     text-align: center;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    box-shadow: 0 8px 32px rgba(0, 255, 255, 0.3), 0 4px 16px rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     opacity: 1;
     transform: translateY(0);
-    transition: all 0.3s ease-out;
-    animation: chatSlideIn 0.3s ease-out;
+    /* Transiciones más suaves y lentas para mejor UX */
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+                opacity 0.4s ease-out;
+    animation: chatSlideInSmooth 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .chat-message.empleado {
@@ -572,8 +583,9 @@ body {
 }
 
 .chat-message.removing {
+    animation: chatSlideOutSmooth 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53);
     opacity: 0;
-    transform: translateY(-20px) scale(0.9);
+    transform: translateY(-30px) scale(0.8);
 }
 
 .chat-speaker {
@@ -611,6 +623,43 @@ body {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
+@keyframes chatSlideInSmooth {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.8) rotateX(-10deg);
+        filter: blur(2px);
+    }
+    50% {
+        opacity: 0.7;
+        transform: translateY(-5px) scale(1.02) rotateX(2deg);
+        filter: blur(0.5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotateX(0deg);
+        filter: blur(0px);
+    }
+}
+
+@keyframes chatSlideOutSmooth {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotateX(0deg);
+        filter: blur(0px);
+    }
+    50% {
+        opacity: 0.3;
+        transform: translateY(-10px) scale(0.95) rotateX(-5deg);
+        filter: blur(1px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.8) rotateX(-15deg);
+        filter: blur(3px);
+    }
+}
+
+/* Mantener las animaciones originales por compatibilidad */
 @keyframes chatSlideIn {
     from {
         opacity: 0;
@@ -866,14 +915,6 @@ body {
     z-index: 30;
 }
 
-.combo-text {
-    position: absolute;
-    font-size: 20px;
-    color: #ffff00;
-    text-shadow: 0 0 10px #ffff00;
-    pointer-events: none;
-    z-index: 40;
-}
 
 /* Decoración arcade flotante */
 .decoration-frame {
@@ -1326,7 +1367,7 @@ body {
     
     /* Year Display CRT TV más pequeña para móvil */
     .year-display {
-        top: 10px;
+        top: 0px;
         padding: 20px 25px;
         border: 8px solid #333;
         border-radius: 25px;
@@ -1334,7 +1375,7 @@ body {
     }
     
     .year-display::before {
-        top: 16px;
+        top: 0px;
         left: 16px;
         right: 16px;
         bottom: 16px;
@@ -1342,7 +1383,7 @@ body {
     }
     
     .year-display::after {
-        top: 16px;
+        top: 0px;
         left: 16px;
         right: 16px;
         bottom: 16px;
@@ -1555,8 +1596,9 @@ body {
     }
     
     .chat-message {
-        min-width: 250px;
-        padding: 8px 12px;
+        min-width: 200px;
+        max-width: 280px;
+        padding: 6px 10px;
     }
     
     .chat-speaker {
@@ -1723,7 +1765,7 @@ body {
     
     /* Display del año compacto */
     .year-display {
-        top: 5px;
+        top: 0px;
         padding: 5px 10px;
         border-width: 2px;
     }
@@ -1761,8 +1803,9 @@ body {
     }
     
     .chat-message {
-        min-width: 250px;
-        padding: 8px 12px;
+        min-width: 220px;
+        max-width: 320px;
+        padding: 7px 11px;
         font-size: 12px;
     }
     
@@ -2213,7 +2256,7 @@ body {
     }
     
     .year-display {
-        padding: 12px 20px;
+        padding: 10px 20px;
     }
     
     .year-number {
@@ -2430,7 +2473,7 @@ body {
     }
     
     .year-display {
-        padding: 20px 30px;
+        padding: 0px 30px;
     }
     
     .year-number {
@@ -2749,5 +2792,71 @@ body {
     .menu-screen {
         padding-top: max(20px, env(safe-area-inset-top));
         padding-bottom: max(20px, env(safe-area-inset-bottom));
+    }
+}
+
+/* ========== DESKTOP GRANDE (más de 1024px) ========== */
+@media (min-width: 1025px) {
+    .year-display {
+        top: 0px;
+        padding: 0px 40px; /* Mucho más grande para desktop */
+        border: 0px solid #333; /* Border más grueso */
+        border-radius: 45px; /* Más redondeado */
+        min-width: 550px; /* Mucho más ancho */
+        box-shadow: 
+            0 0 0 8px #444,
+            0 16px 32px rgba(0, 0, 0, 0.8),
+            inset 0 4px 8px rgba(255, 255, 255, 0.1);
+    }
+    
+    .year-display::before {
+        top: 10px;
+        left: 32px;
+        right: 32px;
+        bottom: 32px;
+        border-radius: 20px;
+    }
+    
+    .year-display::after {
+        top: 32px;
+        left: 32px;
+        right: 32px;
+        bottom: 32px;
+        border-radius: 20px;
+    }
+    
+    .year-number {
+        font-size: 48px !important; /* Mucho más grande */
+        margin-bottom: 12px !important;
+        text-shadow: 0 0 15px currentColor;
+    }
+    
+    .year-nostalgia {
+        font-size: 18px !important; /* Texto más grande */
+        line-height: 1.4 !important;
+        opacity: 0.9;
+    }
+    
+    /* Chat container también más grande en desktop */
+    .chat-container {
+        bottom: 20%;
+        width: 85%;
+        max-width: 800px;
+        height: 45%;
+    }
+    
+    .chat-message {
+        max-width: 600px;
+        min-width: 400px;
+        padding: 16px 24px;
+        font-size: 16px;
+    }
+    
+    .chat-speaker {
+        font-size: 14px !important;
+    }
+    
+    .chat-text {
+        font-size: 16px !important;
     }
 }

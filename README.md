@@ -42,7 +42,7 @@ El juego viene con música synthwave generada en vivo que cambia cada año del j
 - **Dificultad progresiva**: Cada año se pone más jodido
 - **Botones que se mueven**: Porque Murphy era argentino y su ley también
 - **Sistema de puntaje**: Para competir con tus amigos (si tenés)
-- **Combos**: Hacé cadenas y multiplicá tu score como un campeón
+
 
 ### 🔧 Tecnología de punta (para los '80s)
 - **Responsive design**: Se ve bien en cualquier aparato

@@ -48,18 +48,12 @@
                     <div>PUNTOS</div>
                     <div class="stat-value" id="score">0</div>
                 </div>
-                <div class="stat">
-                    <div>VIDAS</div>
-                    <div class="stat-value" id="lives">❤️❤️❤️</div>
-                </div>
+                <!-- Vidas removidas en modo nostálgico -->
                 <div class="stat">
                     <div>AÑO</div>
                     <div class="stat-value" id="year">1987</div>
                 </div>
-                <div class="stat">
-                    <div>COMBO</div>
-                    <div class="stat-value" id="combo">x1</div>
-                </div>
+               
             </div>
             <button class="pause-button" onclick="showPauseModal()" id="pauseButton">⏸️ PAUSA</button>
         </div>
@@ -86,6 +80,9 @@
                 </div>
                 <div class="movie-poster" data-image="takeonme.jpg">
                     <div class="poster-label">A-HA<br/>TAKE ON ME</div>
+                </div>
+                <div class="movie-poster" data-image="historiasinfin.jpg">
+                    <div class="poster-label">HISTORIA<br/>SIN FIN</div>
                 </div>
             </div>
             
@@ -143,15 +140,11 @@
                                 <div>🧉☕ Mate o Café - Clientes contentos</div>
                                 <div>🕹️ Nintendo - Puntos dobles</div>
                             </div>
-                            
-                            <div class="instruction-section">
-                                <div class="section-title">🏆 SISTEMA DE COMBOS</div>
-                                <div>Sirve 3 clientes seguidos sin fallar para aumentar tu multiplicador</div>
-                            </div>
+                          
                             
                             <div class="instruction-section">
                                 <div class="section-title">📅 PROGRESIÓN</div>
-                                <div>Cada 15 clientes avanzas un año (1987-1992) y aumenta la dificultad</div>
+                                <div>Cada 10 clientes avanzas un año (1987-1992) y aumenta la dificultad</div>
                             </div>
                             
                             <div class="instruction-section retro-warning">
@@ -175,14 +168,9 @@
                             <div class="pause-stat">
                                 <span>PUNTOS:</span> <span id="pauseScore">0</span>
                             </div>
-                            <div class="pause-stat">
-                                <span>VIDAS:</span> <span id="pauseLives">❤️❤️❤️</span>
-                            </div>
+                            <!-- Vidas removidas en modo nostálgico -->
                             <div class="pause-stat">
                                 <span>AÑO:</span> <span id="pauseYear">1987</span>
-                            </div>
-                            <div class="pause-stat">
-                                <span>COMBO:</span> <span id="pauseCombo">x1</span>
                             </div>
                         </div>
                         <div class="pause-buttons">
@@ -196,6 +184,8 @@
     </div>
     
     <!-- External JavaScript -->
+    <script src="assets/frases-nostalgicas.js"></script>
+    <script src="assets/audio.js"></script>
     <script src="assets/game.js"></script>
 </body>
 </html>
