@@ -2267,3 +2267,73 @@ function resumeAllGameTimers() {
         }
     });
 }
+
+// ========== FUNCIONES DE TESTING (COMENTADAS PARA PRODUCCIÓN) ========== 
+/* 
+function startTestingMode() {
+    // Configuración súper rápida para testing
+    gameConfig.yearDuration = 3000; // 3 segundos por año
+    gameConfig.clientesParaAvance = 1; // Solo 1 acierto para avanzar
+    gameConfig.customerSpawnRate = 1000; // Clientes cada segundo
+    
+    // Iniciar juego normal
+    startGame();
+    
+    // Mensaje de testing
+    setTimeout(() => {
+        mostrarDialogoJuego("🚀 MODO TESTING: Progresión súper rápida activada! Ve directo a 1995!", 'empleado');
+    }, 1000);
+    
+    // Agregar botón para saltar a 1995 directamente
+    setTimeout(() => {
+        const gameArea = document.getElementById('gameArea');
+        const skipButton = document.createElement('button');
+        skipButton.innerHTML = '⏭️ SALTAR A 1995';
+        skipButton.style.position = 'fixed';
+        skipButton.style.top = '10px';
+        skipButton.style.right = '10px';
+        skipButton.style.zIndex = '99999';
+        skipButton.style.background = 'linear-gradient(135deg, #ff6b35, #f7931e)';
+        skipButton.style.color = 'white';
+        skipButton.style.border = 'none';
+        skipButton.style.padding = '10px 15px';
+        skipButton.style.borderRadius = '8px';
+        skipButton.style.fontFamily = "'Press Start 2P', monospace";
+        skipButton.style.fontSize = '10px';
+        skipButton.style.cursor = 'pointer';
+        skipButton.onclick = () => {
+            skipToFinalYear();
+            skipButton.remove();
+        };
+        gameArea.appendChild(skipButton);
+    }, 2000);
+}
+
+function skipToFinalYear() {
+    // Saltar directamente a 1994 para ver la transición a 1995
+    gameState.year = 1994;
+    gameState.customersServed = ((gameState.year - 1987) * gameConfig.clientesParaAvance) + 5; // Suficientes para estar cerca
+    gameState.score = 15000; // Score decente
+    
+    // Actualizar display
+    updateDisplay();
+    
+    // Mensaje épico
+    mostrarDialogoJuego("💥 ¡SALTANDO AL AÑO 1994! El final está cerca... Blockbuster dominará pronto", 'empleado');
+    
+    // Forzar transición después de 3 segundos
+    setTimeout(() => {
+        // Simular que llega a 1995
+        gameState.year = 1995;
+        gameState.isPlaying = false;
+        showGameOverScreen();
+    }, 3000);
+}
+
+// Función para restaurar configuración normal (opcional)
+function restoreNormalConfig() {
+    gameConfig.yearDuration = 45000;
+    gameConfig.clientesParaAvance = 8;
+    gameConfig.customerSpawnRate = 12000;
+}
+*/
