@@ -43,19 +43,7 @@
         <!-- Cabecera del juego -->
         <div class="header">
             <div class="logo">📼 VIDEOCLUB SANDY</div>
-            <div class="stats">
-                <div class="stat">
-                    <div>PUNTOS</div>
-                    <div class="stat-value" id="score">0</div>
-                </div>
-                <!-- Vidas removidas en modo nostálgico -->
-                <div class="stat">
-                    <div>AÑO</div>
-                    <div class="stat-value" id="year">1987</div>
-                </div>
-               
-            </div>
-            <button class="pause-button" onclick="showPauseModal()" id="pauseButton">⏸️ PAUSA</button>
+            
         </div>
         
         <!-- Área principal del juego -->
@@ -86,8 +74,19 @@
                 </div>
             </div>
             
-            <!-- Display del año prominente -->
+            <!-- Display del año prominente con puntos, combo y pausa integrados -->
             <div class="year-display">
+                <div class="year-stats-row">
+                    <div class="stat-inline">
+                        <div>PUNTOS</div>
+                        <div class="stat-value" id="score">0</div>
+                    </div>
+                    <div class="stat-inline">
+                        <div>COMBO</div>
+                        <div class="stat-value" id="combo">x1</div>
+                    </div>
+                    <button class="pause-button" onclick="showPauseModal()" id="pauseButton">⏸️ PAUSA</button>
+                </div>
                 <div class="year-number" id="yearDisplay">1987</div>
                 <div class="year-nostalgia" id="yearNostalgia">¡El año que cambió todo!</div>
             </div>

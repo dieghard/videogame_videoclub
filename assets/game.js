@@ -4,13 +4,14 @@ let gameState = {
     score: 0,
     // lives: 3, // Removido en modo nostálgico - juego infinito
     year: 1987,
+    combo: 1,
     selectedItem: null,
     customers: [],
     powerUps: [],
     currentYear: 1987,
     customersServed: 0,
     difficulty: 1,
-
+    comboCount: 0,
     activePowerUps: {},
     highScore: localStorage.getItem('retroVideoClubHighScore') || 0
 };
@@ -591,8 +592,10 @@ function startGame() {
     gameState.score = 0;
     // gameState.lives = 3; // Removido en modo nostálgico
     gameState.year = 1987;
+    gameState.combo = 1;
     gameState.currentYear = 1987; 
     gameState.customersServed = 0;
+    gameState.comboCount = 0;
     gameState.customers = [];
     gameState.powerUps = [];
     gameState.activePowerUps = {};
@@ -643,9 +646,17 @@ function gameLoop() {
 
 // Actualizar display
 function updateDisplay() {
-    document.getElementById('score').textContent = gameState.score.toLocaleString();
-    // document.getElementById('lives').textContent = '❤️'.repeat(gameState.lives); // Removido en modo nostálgico
-    document.getElementById('year').textContent = gameState.year;
+    // Actualizar elementos con verificación de existencia
+    const scoreElement = document.getElementById('score');
+    const comboElement = document.getElementById('combo');
+    
+    if (scoreElement) {
+        scoreElement.textContent = gameState.score.toLocaleString();
+    }
+    
+    if (comboElement) {
+        comboElement.textContent = `x${gameState.combo}`;
+    }
     
     // Actualizar display prominente del año
     const yearDisplay = document.getElementById('yearDisplay');
@@ -709,12 +720,18 @@ function serveCustomer() {
     const isCorrect = customer.request === gameState.selectedItem;
     
     if (isCorrect) {
+        // Incrementar combo por acierto consecutivo
+        gameState.comboCount++;
+        if (gameState.comboCount >= 3) {
+            gameState.combo = Math.min(5, Math.floor(gameState.comboCount / 3) + 1);
+        }
+        
         // Acierto
-        const points = 100 * gameState.difficulty;
+        let points = 100 * gameState.difficulty * gameState.combo;
         gameState.score += points;
                
         gameState.customersServed++;
-        showScoreDisplay(`+${points}`, customer.element.offsetLeft, customer.element.offsetTop);
+        showScoreDisplay(`+${points} x${gameState.combo}`, customer.element.offsetLeft, customer.element.offsetTop);
         createParticles(customer.element.offsetLeft + 50, customer.element.offsetTop + 60, '#00ff00');
         
         // Aplicar efecto de power-up de doble puntos
@@ -740,6 +757,10 @@ function serveCustomer() {
         triggerVibration([60, 30, 60]);
         
     } else {
+        // Error - resetear combo
+        gameState.comboCount = 0;
+        gameState.combo = 1;
+        
         // Error - sin penalización, solo feedback nostálgico
         // Mostrar mensaje centrado en la pantalla
         const gameArea = document.getElementById('gameArea');
@@ -1954,9 +1975,21 @@ function exitToMenu() {
 
 // Actualizar estadísticas en modal de pausa
 function updatePauseStats() {
-    document.getElementById('pauseScore').textContent = gameState.score;
-    // document.getElementById('pauseLives').textContent = '❤️'.repeat(gameState.lives); // Removido en modo nostálgico
-    document.getElementById('pauseYear').textContent = gameState.year;
+    const pauseScoreElement = document.getElementById('pauseScore');
+    const pauseYearElement = document.getElementById('pauseYear');
+    const pauseComboElement = document.getElementById('pauseCombo');
+    
+    if (pauseScoreElement) {
+        pauseScoreElement.textContent = gameState.score;
+    }
+    
+    if (pauseYearElement) {
+        pauseYearElement.textContent = gameState.year;
+    }
+    
+    if (pauseComboElement) {
+        pauseComboElement.textContent = 'x' + gameState.combo;
+    }
 }
 
 // Pausar todos los timers del juego
