@@ -144,6 +144,33 @@ const gameConfig = {
             "¡Los primeros shoppings centers! ♪ Tears in Heaven - Eric Clapton",
             "¡La estabilidad económica llega! ♪ November Rain - Guns N' Roses",
             "¡Los cyber cafés aparecen! ♪ Under the Bridge - Red Hot Chili Peppers"
+        ],
+        // 1993
+        [
+            "¡Jurassic Park revoluciona el cine! ♪ I'd Do Anything for Love - Meat Loaf",
+            "📺 NOTICIA: Blockbuster anuncia expansión a Sudamérica ♪ What's Up? - 4 Non Blondes",
+            "¡The X-Files comienza en TV! ♪ Creep - Radiohead",
+            "¡Los Power Rangers invaden! ♪ Dreamlover - Mariah Carey",
+            "📰 RUMOR: Grandes cadenas yanquis estudian Argentina ♪ That's the Way Love Goes - Janet Jackson",
+            "¡Los primeros Pentium en Argentina! ♪ Hero - Mariah Carey"
+        ],
+        // 1994
+        [
+            "¡El Rey León de Disney arrasa! ♪ I Swear - All-4-One",
+            "📺 BREAKING: Blockbuster abre 3 sucursales en Capital ♪ The Sign - Ace of Base",
+            "¡Forrest Gump emociona al mundo! ♪ I'll Make Love to You - Boyz II Men",
+            "📰 PREOCUPACIÓN: Los videoclubes independientes sufren ♪ Loser - Beck",
+            "¡PlayStation llega a cambiar todo! ♪ Bump N' Grind - R. Kelly",
+            "📺 ALERTA: Blockbuster promete 50 locales en Buenos Aires ♪ The Power of Love - Celine Dion"
+        ],
+        // 1995
+        [
+            "¡Toy Story: primera película 100% digital! ♪ Waterfalls - TLC",
+            "📺 CRISIS: Blockbuster abre 15 locales más este mes ♪ Kiss from a Rose - Seal",
+            "¡Batman Forever con Val Kilmer! ♪ You Oughta Know - Alanis Morissette",
+            "📰 ULTIMÁTUM: Los alquileres suben, la competencia mata ♪ Fantasy - Mariah Carey",
+            "¡Windows 95 cambia las computadoras! ♪ One Sweet Day - Mariah Carey & Boyz II Men",
+            "💔 FIN DE ERA: VideoClub Sandy cierra sus puertas... ♪ Don't Speak - No Doubt"
         ]
     ],
     nostalgicPhrases: {
@@ -230,6 +257,48 @@ const gameConfig = {
             "¡Las primeras películas en DVD!",
             "¡Los cyber cafés para navegar!",
             "¡Los pagers para los importantes!"
+        ],
+        1993: [
+            "¡Jurassic Park volaba cabezas!",
+            "¡Los Power Rangers eran furor!",
+            "¡The X-Files daba miedo!",
+            "¡Blockbuster llegaba a Buenos Aires!",
+            "¡Los videoclubes empezaban a preocuparse!",
+            "¡Las primeras PC Pentium!",
+            "¡Los CDs ganaban terreno!",
+            "¡Radiohead cambiaba el rock!",
+            "¡Las cadenas de fast food llegaban!",
+            "¡Los primeros cyber cafés!",
+            "¡Mariah Carey dominaba las radios!",
+            "¡Los videoclubes baratos empezaban a cerrar!"
+        ],
+        1994: [
+            "¡El Rey León rompía récords!",
+            "¡Forrest Gump nos hacía llorar!",
+            "¡Blockbuster abría 3 locales por mes!",
+            "¡Los videoclubes independientes luchaban!",
+            "¡PlayStation llegaba a cambiar todo!",
+            "¡Ace of Base sonaba en todos lados!",
+            "¡Los alquileres de locales se dispararon!",
+            "¡La competencia con las grandes cadenas!",
+            "¡Los clientes se iban a los shopping!",
+            "¡Celine Dion cantaba por amor!",
+            "¡Los videoclubes familiares resistían!",
+            "¡El fin de una era se acercaba!"
+        ],
+        1995: [
+            "¡Toy Story revolucionaba el cine!",
+            "¡Blockbuster tenía 50 locales en Buenos Aires!",
+            "¡Batman Forever con efectos espectaculares!",
+            "¡Windows 95 cambiaba las computadoras!",
+            "¡Los videoclubes independientes cerraban!",
+            "¡TLC y Waterfalls en repeat!",
+            "¡VideoClub Sandy ya no podía competir!",
+            "¡Los alquileres del barrio imposibles!",
+            "¡Alanis Morissette gritaba la bronca!",
+            "¡El final de los videoclubes familiares!",
+            "¡No Doubt cantaba Don't Speak!",
+            "🎬 ¡GRACIAS POR TANTO, VIDEOCLUB SANDY! 🎬"
         ]
     }
 };
@@ -1173,7 +1242,12 @@ function updatePowerUps() {
 
 // Verificar transición de año
 function checkYearTransition() {
-    if (gameState.year >= 1992) return; // Máximo hasta 1992
+    if (gameState.year >= 1995) {
+        // Llegamos a 1995, el VideoClub Sandy debe cerrar por Blockbuster
+        gameState.isPlaying = false;
+        showGameOverScreen();
+        return;
+    }
     
     const currentTime = Date.now();
     const timeSinceLastYear = currentTime - gameState.lastYearChangeTime;
@@ -1679,6 +1753,79 @@ function playGameOverSound() {
             audioSystem.createOscillator(freq, 'sawtooth', 0.3);
         }, index * 100);
     });
+}
+
+// Pantalla de Game Over épica para el final en 1995
+function showGameOverScreen() {
+    // Frases épicas y nostálgicas para el cierre del VideoClub Sandy
+    const frasesFinales = [
+        "VideoClub Sandy cierra sus puertas después de 8 años...",
+        "Los videoclubes familiares no pudieron contra las grandes cadenas",
+        "Blockbuster ganó la batalla, pero perdimos la magia del barrio",
+        "Sandy te abraza una última vez y dice 'Gracias por tanto'",
+        "El último VHS se alquila... es el fin de una era",
+        "Los videoclubes independientes eran más que un negocio, eran familia",
+        "1995: El año en que la nostalgia nació prematuramente",
+        "Ese videoclub donde te conocían por tu nombre... ya no existe",
+        "Los empleados que te recomendaban la peli perfecta... se fueron",
+        "El mate compartido mientras elegías una película... se terminó"
+    ];
+    
+    const fraseElegida = frasesFinales[Math.floor(Math.random() * frasesFinales.length)];
+    
+    // Crear modal épico
+    let modal = document.getElementById('crtModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'crtModal';
+        modal.className = 'crt-modal';
+        document.body.appendChild(modal);
+    }
+    
+    modal.innerHTML = `
+        <div class="crt-screen">
+            <div class="scanlines"></div>
+            <div class="crt-content">
+                <div class="crt-title">💔 FINAL DE ERA 💔</div>
+                <div class="crt-subtitle">VideoClub Sandy (1987-1995)</div>
+                <div class="crt-message">${fraseElegida}</div>
+                <div class="crt-epilogue">
+                    <p>🎬 <strong>EPILOGO:</strong></p>
+                    <p>Blockbuster dominó la industria hasta que Netflix llegó en 2007...</p>
+                    <p>Pero nosotros nunca olvidaremos los videoclubes de barrio</p>
+                    <p>donde te conocían por tu nombre y te guardaban la peli favorita.</p>
+                    <br>
+                    <p><em>"Algunas historias terminan, pero la nostalgia es eterna"</em></p>
+                </div>
+                <div class="crt-stats">
+                    <div>🏆 PUNTUACIÓN FINAL: ${gameState.score.toLocaleString()}</div>
+                    <div>📅 AÑOS SOBREVIVIDOS: ${gameState.year - 1987 + 1} años (1987-${gameState.year})</div>
+                    <div>👥 CLIENTES ATENDIDOS: ${gameState.customersServed}</div>
+                    <div>💝 MEMORIAS CREADAS: ∞</div>
+                </div>
+                <button class="crt-button" onclick="closeCRTModal()">VOLVER AL MENÚ</button>
+            </div>
+            <div class="crt-noise"></div>
+        </div>
+    `;
+    
+    // Mostrar modal con efecto
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('show'), 100);
+    
+    // Efecto de sonido nostálgico
+    if (audioEnabled) {
+        playGameOverSound();
+        // Sonido especial más melancólico para el final épico
+        setTimeout(() => {
+            const frequencies = [523, 494, 440, 392, 349]; // Escala descendente nostálgica
+            frequencies.forEach((freq, index) => {
+                setTimeout(() => {
+                    audioSystem.createOscillator(freq, 'sine', 0.2, 1500);
+                }, index * 300);
+            });
+        }, 1000);
+    }
 }
 
 // Sistema de chispas ochentosas

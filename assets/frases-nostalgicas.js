@@ -33,7 +33,20 @@ const frasesEmpleado = [
     "👨‍💼 EMPLEADO: ¿viste el nuevo sistema Dolby en los cines?",
     "👨‍💼 EMPLEADO: tengo los cassettes de los Redondos pero shh...",
     "👨‍💼 EMPLEADO: ¿querés probar el nuevo formato CD? suena increíble",
-    "👨‍💼 EMPLEADO: el lunes llegan las cintas de aerobic de Jane Fonda"
+    "👨‍💼 EMPLEADO: el lunes llegan las cintas de aerobic de Jane Fonda",
+    // FRASES SOBRE BLOCKBUSTER (1993-1995)
+    "👨‍💼 EMPLEADO: che, ¿viste que abrieron un Blockbuster en Palermo?",
+    "👨‍💼 EMPLEADO: dicen que Blockbuster va a traer todos los estrenos",
+    "👨‍💼 EMPLEADO: los yankis tienen miles de películas, nosotros... paciencia",
+    "👨‍💼 EMPLEADO: Sandy me dijo que vamos a resistir con la atención personal",
+    "👨‍💼 EMPLEADO: en el Blockbuster no te dan mate, ¿no?",
+    "👨‍💼 EMPLEADO: acá conocemos tu nombre y tus gustos, eso vale oro",
+    "👨‍💼 EMPLEADO: por suerte tenemos clientes fieles desde el '87",
+    "👨‍💼 EMPLEADO: no sé si vamos a poder competir con los precios yankis...",
+    "👨‍💼 EMPLEADO: el dueño está preocupado por el alquiler del local",
+    "👨‍💼 EMPLEADO: Sandy dice que la calidad humana no se compra",
+    "👨‍💼 EMPLEADO: che, bancanos que somos parte del barrio, ¿dale?",
+    "👨‍💼 EMPLEADO: este lugar tiene historia, no como esas cadenas frías"
 ];
 
 // Frases de CLIENTES que entran (comentarios casuales, chismes)
@@ -64,7 +77,23 @@ const frasesClientes = [
     "👥 CLIENTE: ¿tenés las canciones de Xuxa para los chicos?",
     "👥 CLIENTE: dicen que van a hacer una serie de las Tortugas Ninja",
     "👥 CLIENTE: ¿viste que abrieron un lugar que vende sándwiches de Subway?",
-    "👥 CLIENTE: mi tio trajo cassettes de Los Angeles, suenan mejor",
+    "👥 CLIENTE: mi tío trajo cassettes de Los Angeles, suenan mejor",
+    // FRASES SOBRE BLOCKBUSTER Y LA COMPETENCIA (1993-1995)
+    "👥 CLIENTE: ¿viste que abrieron un Blockbuster gigante en el shopping?",
+    "👥 CLIENTE: dicen que en Blockbuster tenés toda película que busques",
+    "👥 CLIENTE: mi cuñado alquiló en Blockbuster y dice que está bueno",
+    "👥 CLIENTE: che, pero ustedes son más copados que los yankis",
+    "👥 CLIENTE: en Blockbuster no te conocen ni te dan charla",
+    "👥 CLIENTE: ¿van a poder competir con esas cadenas gigantes?",
+    "👥 CLIENTE: yo prefiero este lugar, tiene onda de barrio",
+    "👥 CLIENTE: espero que no cierren como el videoclub de Boedo",
+    "👥 CLIENTE: mi hermano dice que los videoclubes van a desaparecer",
+    "👥 CLIENTE: ¿es verdad que van a abrir 50 Blockbusters?",
+    "👥 CLIENTE: yo banco a los comercios del barrio, vieja",
+    "👥 CLIENTE: acá por lo menos me fían cuando no tengo cambio",
+    "👥 CLIENTE: Blockbuster será moderno pero no tiene alma",
+    "👥 CLIENTE: mi vieja dice que Sandy la conoce desde que era piba",
+    "👥 CLIENTE: espero que resistan, este lugar es historia pura",
     "👥 CLIENTE: ¿es cierto que van a hacer Jurassic Park 2?",
     "👥 CLIENTE: dicen que Whitney Houston va a cantar acá",
     "👥 CLIENTE: ¿viste que pusieron cable en todo Recoleta?",
@@ -232,7 +261,24 @@ const curiosidades90s = [
     "🕹️ CURIOSIDAD (1985): Paperboy te convertía en el repartidor de diarios más loco?",
     "🕹️ CURIOSIDAD (1982): Q*bert hablaba un idioma inventado con globitos de texto?",
     "🕹️ CURIOSIDAD (1987): las recreativas argentinas tenían pegatinas de rock nacional?",
-    "🕹️ CURIOSIDAD (1983): Crystal Castles usaba trackball para mover a Bentley Bear?"
+    "🕹️ CURIOSIDAD (1983): Crystal Castles usaba trackball para mover a Bentley Bear?",
+    
+    // CURIOSIDADES BLOCKBUSTER Y DECADENCIA (1993-1995)
+    "📺 CURIOSIDAD (1993): Blockbuster llegó a Argentina con 3 sucursales gigantes?",
+    "📺 CURIOSIDAD (1993): un local de Blockbuster tenía 10 veces más películas?",
+    "📺 CURIOSIDAD (1993): Jurassic Park fue el último gran éxito de videoclubes independientes?",
+    "📺 CURIOSIDAD (1994): Blockbuster prometió 50 locales en Buenos Aires en un año?",
+    "📺 CURIOSIDAD (1994): los videoclubes familiares empezaron a cerrar de a docenas?",
+    "📺 CURIOSIDAD (1994): Forrest Gump se alquiló más en Blockbuster que en independientes?",
+    "📺 CURIOSIDAD (1994): los alquileres de locales comerciales se triplicaron?",
+    "📺 CURIOSIDAD (1994): PlayStation llegó justo cuando los videoclubes agonizaban?",
+    "📺 CURIOSIDAD (1995): Blockbuster tenía convenio directo con Hollywood?",
+    "📺 CURIOSIDAD (1995): los videoclubes independientes bajaron precios pero ya era tarde?",
+    "📺 CURIOSIDAD (1995): Toy Story marcó el fin de una era en los videoclubes?",
+    "📺 CURIOSIDAD (1995): muchos dueños de videoclubes se hicieron franquiciados?",
+    "📺 CURIOSIDAD (1995): Windows 95 llegó cuando los videoclubes familiares se extinguían?",
+    "📺 CURIOSIDAD (1995): la nostalgia de los videoclubes empezó ese mismo año?",
+    "💔 CURIOSIDAD (1995): VideoClub Sandy fue uno de los últimos en cerrar con dignidad?"
 ];
 
 // Exportar las variables para usar en el juego principal
