@@ -13,7 +13,11 @@ let gameState = {
     difficulty: 1,
     comboCount: 0,
     activePowerUps: {},
-    highScore: localStorage.getItem('retroVideoClubHighScore') || 0
+    highScore: localStorage.getItem('retroVideoClubHighScore') || 0,
+    // Nuevas variables para progreso temporal
+    gameStartTime: 0,
+    lastYearChangeTime: 0,
+    yearProgress: 0 // 0-100 para mostrar progreso visual
 };
 
 // Gestión de timers para poder limpiarlos
@@ -84,6 +88,8 @@ const gameConfig = {
     customerPatience: 16000,        // Duplicada: 16 segundos de paciencia
     maxCustomers: 2,                // Solo 2 clientes máximo para menos presión
     powerUpSpawnRate: 10000,        // Más power-ups: cada 10 segundos
+    yearDuration: 45000,            // 45 segundos por año (tiempo automático)
+    clientesParaAvance: 8,          // 8 aciertos para avanzar de año (reducido de 10)
     yearEvents: [
         // 1987
         [
@@ -601,6 +607,14 @@ function startGame() {
     gameState.activePowerUps = {};
     gameState.difficulty = 1;
     gameState.selectedItem = null;
+    // Inicializar tiempos para progreso automático
+    gameState.gameStartTime = Date.now();
+    gameState.lastYearChangeTime = Date.now();
+    gameState.yearProgress = 0;
+    // Inicializar tiempos para progreso automático
+    gameState.gameStartTime = Date.now();
+    gameState.lastYearChangeTime = Date.now();
+    gameState.yearProgress = 0;
     
     // Limpiar cualquier elemento residual en el DOM
     const gameArea = document.getElementById('gameArea');
@@ -661,9 +675,43 @@ function updateDisplay() {
     // Actualizar display prominente del año
     const yearDisplay = document.getElementById('yearDisplay');
     const yearNostalgia = document.getElementById('yearNostalgia');
+    const yearProgressFill = document.getElementById('yearProgressFill');
+    const yearProgressText = document.getElementById('yearProgressText');
     
     if (yearDisplay) {
         yearDisplay.textContent = gameState.year;
+    }
+    
+    // Actualizar barra de progreso visual
+    if (yearProgressFill && gameState.isPlaying) {
+        yearProgressFill.style.width = `${Math.max(0, Math.min(100, gameState.yearProgress))}%`;
+        
+        // Cambiar color según el progreso
+        if (gameState.yearProgress > 80) {
+            yearProgressFill.style.background = 'linear-gradient(90deg, #ff0000 0%, #ff00ff 50%, #ff0000 100%)';
+        } else if (gameState.yearProgress > 50) {
+            yearProgressFill.style.background = 'linear-gradient(90deg, #ffff00 0%, #ff00ff 50%, #ffff00 100%)';
+        } else {
+            yearProgressFill.style.background = 'linear-gradient(90deg, #00ffff 0%, #ff00ff 50%, #00ffff 100%)';
+        }
+    }
+    
+    // Actualizar texto de progreso
+    if (yearProgressText && gameState.isPlaying) {
+        const currentTime = Date.now();
+        const timeSinceLastYear = currentTime - gameState.lastYearChangeTime;
+        const clientesEnEstePeriodo = gameState.customersServed - ((gameState.year - 1987) * gameConfig.clientesParaAvance);
+        
+        const timeProgress = Math.min(100, (timeSinceLastYear / gameConfig.yearDuration) * 100);
+        const aciertoProgress = Math.min(100, (clientesEnEstePeriodo / gameConfig.clientesParaAvance) * 100);
+        
+        if (timeProgress > aciertoProgress) {
+            const secondsLeft = Math.max(0, Math.floor((gameConfig.yearDuration - timeSinceLastYear) / 1000));
+            yearProgressText.textContent = `⏱️ Tiempo: ${secondsLeft}s restantes (${Math.round(timeProgress)}%)`;
+        } else {
+            const aciertosFaltantes = Math.max(0, gameConfig.clientesParaAvance - clientesEnEstePeriodo);
+            yearProgressText.textContent = `🎯 Aciertos: ${aciertosFaltantes} restantes (${Math.round(aciertoProgress)}%)`;
+        }
     }
     
     if (yearNostalgia && gameConfig.nostalgicPhrases[gameState.year]) {
@@ -1125,14 +1173,30 @@ function updatePowerUps() {
 
 // Verificar transición de año
 function checkYearTransition() {
-    // Avanzar año cada 10 clientes servidos (más rápido), máximo hasta 1992
-    const clientesParaAvance = 10;
-    const añoObjetivo = 1987 + Math.floor(gameState.customersServed / clientesParaAvance);
+    if (gameState.year >= 1992) return; // Máximo hasta 1992
     
-    if (gameState.year < añoObjetivo && gameState.year < 1992) {
+    const currentTime = Date.now();
+    const timeSinceLastYear = currentTime - gameState.lastYearChangeTime;
+    
+    // Calcular progreso por tiempo (0-100)
+    const timeProgress = Math.min(100, (timeSinceLastYear / gameConfig.yearDuration) * 100);
+    
+    // Calcular progreso por aciertos (0-100)
+    const clientesEnEstePeriodo = gameState.customersServed - ((gameState.year - 1987) * gameConfig.clientesParaAvance);
+    const aciertoProgress = Math.min(100, (clientesEnEstePeriodo / gameConfig.clientesParaAvance) * 100);
+    
+    // El progreso general es el mayor de los dos
+    gameState.yearProgress = Math.max(timeProgress, aciertoProgress);
+    
+    // Avanzar año si se cumple CUALQUIERA de las dos condiciones
+    const shouldAdvanceByTime = timeSinceLastYear >= gameConfig.yearDuration;
+    const shouldAdvanceByScore = clientesEnEstePeriodo >= gameConfig.clientesParaAvance;
+    
+    if (shouldAdvanceByTime || shouldAdvanceByScore) {
         gameState.year++;
-        gameState.currentYear = gameState.year; // Actualizar currentYear para la música
-        // Sin incremento de dificultad - experiencia relajada
+        gameState.currentYear = gameState.year;
+        gameState.lastYearChangeTime = currentTime;
+        gameState.yearProgress = 0;
         
         // Cambiar música si es necesario
         if (audioEnabled && audioSystem.isPlaying) {
@@ -1141,6 +1205,15 @@ function checkYearTransition() {
             setTimeout(() => {
                 audioSystem.startBackgroundMusic();
             }, 500);
+        }
+        
+        // Mostrar razón del avance en el chat
+        if (shouldAdvanceByScore && shouldAdvanceByTime) {
+            mostrarDialogoJuego('¡Avanzaste de año por tiempo Y por aciertos! ¡Excelente!', 'empleado');
+        } else if (shouldAdvanceByScore) {
+            mostrarDialogoJuego(`¡Avanzaste de año por ${gameConfig.clientesParaAvance} aciertos!`, 'empleado');
+        } else {
+            mostrarDialogoJuego('¡El tiempo pasa... avanzamos de año automáticamente!', 'empleado');
         }
         
         showYearTransition();
